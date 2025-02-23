@@ -6,7 +6,7 @@ job:
     git_username: 无
     work_dir: /home/hc/opensource
     job_shell: |-
-        mv java110-interface/src/main/resources/xx.xml java110-interface/src/main/resources/logback.xml
+        mv property-interface/src/main/resources/xx.xml property-interface/src/main/resources/logback.xml
         sh changeCloudEnvLinux.sh
         mvn clean package
     plans:

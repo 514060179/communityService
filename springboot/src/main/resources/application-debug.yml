@@ -3,7 +3,9 @@ server:
   tomcat:
     uri-encoding: UTF-8
 
-
+tcp:
+  server:
+    port: 60000
 
 spring:
   profiles:
@@ -17,9 +19,9 @@ spring:
     name: boot-service
   redis:
     database: 0
-    host: 192.168.1.108
+    host: 127.0.0.1
     port: 6379
-    password: hc12345678
+    password: 123456
     pool:
       max-active: 300
       max-wait: 3000
@@ -37,33 +39,33 @@ feign:
         read-timeout: 20000
 
 #============== kafka ===================
-kafka:
-  consumer:
-    zookeeper:
-      connect: dev.zk.java110.com:2181
-    servers: dev.kafka.java110.com:9092
-    enable:
-      auto:
-        commit: true
-    session:
-      timeout: 6000
-    auto:
-      commit:
-        interval: 100
-      offset:
-        reset: latest
-    topic: test
-    group:
-      id: communityBusinessStatus
-    concurrency: 10
-
-  producer:
-    zookeeper:
-      connect: dev.zk.java110.com:2181
-    servers: dev.kafka.java110.com:9092
-    retries: 0
-    batch:
-      size: 4096
-    linger: 1
-    buffer:
-      memory: 40960
+#kafka:
+#  consumer:
+#    zookeeper:
+#      connect: dev.zk.newland.com:2181
+#    servers: dev.kafka.newland.com:9092
+#    enable:
+#      auto:
+#        commit: true
+#    session:
+#      timeout: 6000
+#    auto:
+#      commit:
+#        interval: 100
+#      offset:
+#        reset: latest
+#    topic: test
+#    group:
+#      id: communityBusinessStatus
+#    concurrency: 10
+#
+#  producer:
+#    zookeeper:
+#      connect: dev.zk.newland.com:2181
+#    servers: dev.kafka.newland.com:9092
+#    retries: 0
+#    batch:
+#      size: 4096
+#    linger: 1
+#    buffer:
+#      memory: 40960

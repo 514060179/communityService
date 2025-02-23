@@ -3,8 +3,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>MicroCommunity</artifactId>
-        <groupId>com.java110</groupId>
+        <artifactId>NewlandProperty</artifactId>
+        <groupId>com.newland.property</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -24,8 +24,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.java110</groupId>
-            <artifactId>java110-boot</artifactId>
+            <groupId>com.newland.property</groupId>
+            <artifactId>property-boot</artifactId>
             <version>${hc.version}</version>
         </dependency>
         <dependency>
@@ -35,139 +35,150 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
-            <artifactId>java110-service</artifactId>
+            <groupId>com.newland.property</groupId>
+            <artifactId>property-service</artifactId>
             <version>${hc.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
+            <groupId>com.newland.property</groupId>
             <artifactId>service-community</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
-                    <groupId>com.java110</groupId>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
+            <groupId>com.newland.property</groupId>
             <artifactId>service-common</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
-                    <groupId>com.java110</groupId>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
+            <groupId>com.newland.property</groupId>
             <artifactId>service-dev</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
-                    <groupId>com.java110</groupId>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
+            <groupId>com.newland.property</groupId>
             <artifactId>service-fee</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
-                    <groupId>com.java110</groupId>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
+            <groupId>com.newland.property</groupId>
             <artifactId>service-job</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
-                    <groupId>com.java110</groupId>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
+            <groupId>com.newland.property</groupId>
             <artifactId>service-oa</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
-                    <groupId>com.java110</groupId>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
+            <groupId>com.newland.property</groupId>
+            <artifactId>service-tcp</artifactId>
+            <version>${hc.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.newland.property</groupId>
             <artifactId>service-acct</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
-                    <groupId>com.java110</groupId>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
+            <groupId>com.newland.property</groupId>
             <artifactId>service-report</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
-                    <groupId>com.java110</groupId>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
+            <groupId>com.newland.property</groupId>
             <artifactId>service-store</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
-                    <groupId>com.java110</groupId>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
+            <groupId>com.newland.property</groupId>
             <artifactId>service-user</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
-                    <groupId>com.java110</groupId>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
+            <groupId>com.newland.property</groupId>
             <artifactId>service-order</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
-                    <groupId>com.java110</groupId>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.java110</groupId>
+            <groupId>com.newland.property</groupId>
             <artifactId>service-scm</artifactId>
             <version>${hc.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>java110-service</artifactId>
-                    <groupId>com.java110</groupId>
+                    <artifactId>property-service</artifactId>
+                    <groupId>com.newland.property</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -184,8 +195,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
 
 
     </dependencies>
@@ -209,8 +222,8 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>com.java110</groupId>
-                                    <artifactId>java110-interface</artifactId>
+                                    <groupId>com.newland.property</groupId>
+                                    <artifactId>property-interface</artifactId>
                                     <version>${microcommunity.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>
@@ -225,7 +238,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.java110.boot.BootApplicationStart</mainClass>
+                    <mainClass>com.newland.property.boot.BootApplicationStart</mainClass>
                 </configuration>
             </plugin>
             <plugin>
@@ -246,6 +259,58 @@
                     </tags>
                 </configuration>
             </plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>com.google.cloud.tools</groupId>-->
+<!--                <artifactId>jib-maven-plugin</artifactId>-->
+<!--                <version>2.7.0</version>-->
+<!--                <configuration>-->
+<!--                    <from>-->
+<!--                        &lt;!&ndash;基础镜像&ndash;&gt;-->
+<!--                        <image>openjdk:alpine</image>-->
+<!--                    </from>-->
+<!--                    <to>-->
+<!--                        &lt;!&ndash;目标镜像registry地址&ndash;&gt;-->
+<!--                        <image>swr.cn-south-1.myhuaweicloud.com/newland-property/property-community</image>-->
+<!--                        <tags>-->
+<!--                            &lt;!&ndash;镜像版本&ndash;&gt;-->
+<!--                            <tag>v1.0.0</tag>-->
+<!--                        </tags>-->
+<!--                        <auth>-->
+<!--                            &lt;!&ndash;用户名密码&ndash;&gt;-->
+<!--                            <username>cn-south-1@ZOIJHOG7AU6VPSURFOHQ</username>-->
+<!--                            <password>9878e8c28684a932b77767972036cc748ebe8e1201acb468acf5e432b1e07023</password>-->
+<!--                        </auth>-->
+<!--                    </to>-->
+<!--                    <container>-->
+<!--                        &lt;!&ndash; 在容器中创建日志目录 &ndash;&gt;-->
+<!--                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>-->
+<!--                        <appRoot>/app</appRoot>-->
+<!--                        <mainClass>com.newland.property.boot.BootApplicationStart</mainClass>-->
+<!--                        <jvmFlags>-->
+<!--                            <jvmFlag>-Xms2g</jvmFlag>-->
+<!--                            <jvmFlag>-Xmx2g</jvmFlag>-->
+<!--                            <jvmFlag>-XX:+PrintGCCause</jvmFlag>-->
+<!--                            <jvmFlag>-XX:+UseGCLogFileRotation</jvmFlag>-->
+<!--                            <jvmFlag>-XX:NumberOfGCLogFiles=5</jvmFlag>-->
+<!--                            <jvmFlag>-XX:GCLogFileSize=20M</jvmFlag>-->
+<!--                            <jvmFlag>-XX:+HeapDumpOnOutOfMemoryError</jvmFlag>-->
+<!--                            <jvmFlag>-XX:HeapDumpPath=/tmp/logs/heapdump.hprof</jvmFlag>-->
+<!--                            <jvmFlag>-Xloggc:/tmp/logs/heap-gc-%t.log</jvmFlag>-->
+<!--                            <jvmFlag>-XX:+PrintGCTimeStamps</jvmFlag>-->
+<!--                            <jvmFlag>-XX:+PrintGCDetails</jvmFlag>-->
+<!--                        </jvmFlags>-->
+<!--                    </container>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>build</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
 
     </build>

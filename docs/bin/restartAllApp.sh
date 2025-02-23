@@ -7,11 +7,11 @@ mvn package -Dmaven.test.skip=true
 
 # 刷hosts
 echo '172.17.0.2 dev.java110.com' >> /etc/hosts
-echo '172.17.0.2 dev.zk.java110.com' >> /etc/hosts
-echo '172.21.0.6 dev.redis.java110.com' >> /etc/hosts
-echo '172.17.0.2 dev.kafka.java110.com' >> /etc/hosts
-echo '172.21.0.15 dev.db.java110.com' >> /etc/hosts
-echo '172.17.0.8 api.java110.com' >> /etc/hosts
+echo '172.17.0.2 dev.zk.newland.com' >> /etc/hosts
+echo '172.21.0.6 dev.redis.newland.com' >> /etc/hosts
+echo '172.17.0.2 dev.kafka.newland.com' >> /etc/hosts
+echo '172.21.0.15 dev.db.newland.com' >> /etc/hosts
+echo '172.17.0.8 api.property.newland.com' >> /etc/hosts
 
 if [[ -a ~/jar_deploy ]];then
 echo "存在文件jar_deploy";

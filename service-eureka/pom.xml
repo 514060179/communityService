@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>MicroCommunity</artifactId>
-        <groupId>com.java110</groupId>
+        <artifactId>NewlandProperty</artifactId>
+        <groupId>com.newland.property</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -40,7 +40,7 @@
                     <!-- 详见：https://github.com/spotify/dockermaven-
                     plugin Invalid repository name ... only [a-z0-9-_.] are
                     allowed-->
-                    <imageName>registry.java110.com/eureka</imageName>
+                    <imageName>registry.newland.com/eureka</imageName>
                     <!-- 指定Dockerfile所在的路径 -->
                     <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
                     <resources>
@@ -56,7 +56,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.java110.eureka.ConfigServerEurekaApplication</mainClass>
+                    <mainClass>com.newland.property.eureka.ConfigServerEurekaApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

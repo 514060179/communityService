@@ -7,8 +7,8 @@
     </extensionElements>
     <userTask activiti:exclusive="true" completionQuantity="1" id="_3" implementation="##unspecified" isForCompensation="false" name="department" startQuantity="1">
       <extensionElements>
-        <activiti:taskListener class="com.java110.common.activity.resourceEnter.ResourceEnterToDepartmentListener" event="create"/>
-        <activiti:taskListener class="com.java110.common.activity.FreshActHiTaskInstAssigneeListener" event="complete"/>
+        <activiti:taskListener class="resourceEnter.activity.com.newland.property.common.ResourceEnterToDepartmentListener" event="create"/>
+        <activiti:taskListener class="activity.com.newland.property.common.FreshActHiTaskInstAssigneeListener" event="complete"/>
       </extensionElements>
       <incoming>_17</incoming>
       <outgoing>_7</outgoing>
