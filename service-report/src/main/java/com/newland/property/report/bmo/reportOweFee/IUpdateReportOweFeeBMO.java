@@ -1,0 +1,17 @@
+package com.newland.property.report.bmo.reportOweFee;
+import com.newland.property.po.reportFee.ReportOweFeePo;
+import org.springframework.http.ResponseEntity;
+
+public interface IUpdateReportOweFeeBMO {
+
+
+    /**
+     * 修改欠费统计
+     * add by wuxw
+     * @param reportOweFeePo
+     * @return
+     */
+    ResponseEntity<String> update(ReportOweFeePo reportOweFeePo);
+
+
+}

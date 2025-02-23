@@ -1,0 +1,17 @@
+package com.newland.property.report.bmo.reportOwnerPayFee;
+import com.newland.property.po.reportFee.ReportOwnerPayFeePo;
+import org.springframework.http.ResponseEntity;
+
+public interface IDeleteReportOwnerPayFeeBMO {
+
+
+    /**
+     * 修改业主缴费明细
+     * add by wuxw
+     * @param reportOwnerPayFeePo
+     * @return
+     */
+    ResponseEntity<String> delete(ReportOwnerPayFeePo reportOwnerPayFeePo);
+
+
+}

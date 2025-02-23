@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userAliasServiceDaoImpl">
+
+    <insert id="saveUserAlias" parameterType="Map">
+        insert into user_alias(
+            user_id,platform,registration_id,status_cd
+        ) values (
+            #{userId},#{platform},#{registrationId},0
+        )
+    </insert>
+
+    <select id="getUserAlias" parameterType="Map" resultType="Map">
+        select t.user_id as userId, t.registration_id as registrationId, t.platform as platform,
+               t.create_time as createTime, t.update_time as updateTime
+        from user_alias t
+        where 1=1 and t.status_cd= #{statusCd}
+        <if test="userId !=null and userId != ''">
+            and t.user_id = #{userId}
+        </if>
+        <if test="registrationId !=null and registrationId != ''">
+            and t.registration_id = #{registrationId}
+        </if>
+        <if test="platform !=null and platform != ''">
+            and t.platform = #{platform}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <!-- 修改门禁信息 add by wuxw 2018-07-03 -->
+    <update id="updateUserAlias" parameterType="Map">
+        update user_alias t set t.status_cd = #{statusCd}
+        <if test="userId != null and userId != ''">
+            ,t.user_id = #{userId}
+        </if>
+        <if test="registrationId !=null and registrationId != ''">
+            , t.registration_id= #{registrationId}
+        </if>
+        <if test="platform !=null and platform != ''">
+            , t.platform= #{platform}
+        </if>
+        where 1=1
+        <if test="userId !=null and userId != ''">
+            and t.user_id = #{userId}
+        </if>
+        <if test="registrationId !=null and registrationId != ''">
+            and t.registration_id = #{registrationId}
+        </if>
+        <if test="platform !=null and platform != ''">
+            and t.platform = #{platform}
+        </if>
+
+    </update>
+
+    <select id="queryUserAliasCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from user_alias t
+        where 1=1
+        <if test="userId !=null and userId != ''">
+            and t.user_id= #{userId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="registrationId !=null and registrationId != ''">
+            and t.registration_id= #{registrationId}
+        </if>
+        <if test="platform !=null and platform != ''">
+            and t.platform = #{platform}
+        </if>
+    </select>
+</mapper>

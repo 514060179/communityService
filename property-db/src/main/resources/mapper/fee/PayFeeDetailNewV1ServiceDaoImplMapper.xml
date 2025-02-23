@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="payFeeDetailNewV1ServiceDaoImpl">
+
+    <!-- 保存费用明细信息 add by wuxw 2018-07-03 -->
+    <insert id="savePayFeeDetailNewInfo" parameterType="Map">
+        insert into pay_fee_detail(
+        prime_rate,detail_id,receivable_amount,cycles,remark,start_time,received_amount,state,end_time,community_id,
+        fee_id,b_id,payable_amount,pay_order_id,cashier_id,cashier_name,open_invoice,
+        acct_amount,discount_amount,deduction_amount,late_amount,gift_amount
+        <if test="createTime != null">
+            ,create_time
+        </if>
+        ) values (
+        #{primeRate},#{detailId},#{receivableAmount},#{cycles},#{remark},#{startTime},#{receivedAmount},#{state},#{endTime},#{communityId},
+        #{feeId},#{bId},#{payableAmount},#{payOrderId},#{cashierId},#{cashierName},#{openInvoice},
+        #{acctAmount},#{discountAmount},#{deductionAmount},#{lateAmount},#{giftAmount}
+        <if test="createTime != null">
+            ,#{createTime}
+        </if>
+        )
+    </insert>
+
+    <!-- 查询费用明细信息 add by wuxw 2018-07-03 -->
+    <select id="getPayFeeDetailNewInfo" parameterType="Map" resultType="Map">
+        select t.prime_rate,t.prime_rate primeRate,t.detail_id,t.detail_id
+        detailId,t.receivable_amount,t.receivable_amount receivableAmount,t.cycles,t.remark,t.status_cd,t.status_cd
+        statusCd,t.start_time,t.start_time startTime,t.received_amount,t.received_amount
+        receivedAmount,t.state,t.end_time,t.end_time endTime,t.community_id,t.community_id communityId,t.fee_id,t.fee_id
+        feeId,t.payable_amount,t.payable_amount payableAmount,t.pay_order_id payOrderId,t.cashier_id
+        cashierId,t.cashier_name cashierName,t.open_invoice openInvoice
+        from pay_fee_detail t
+        where 1 =1
+        <if test="primeRate !=null and primeRate != ''">
+            and t.prime_rate= #{primeRate}
+        </if>
+        <if test="detailId !=null and detailId != ''">
+            and t.detail_id= #{detailId}
+        </if>
+        <if test="receivableAmount !=null and receivableAmount != ''">
+            and t.receivable_amount= #{receivableAmount}
+        </if>
+        <if test="cycles !=null and cycles != ''">
+            and t.cycles= #{cycles}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.start_time= #{startTime}
+        </if>
+        <if test="receivedAmount !=null and receivedAmount != ''">
+            and t.received_amount= #{receivedAmount}
+        </if>
+        <if test="payableAmount !=null and payableAmount != ''">
+            and t.payable_amount= #{payableAmount}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and t.end_time= #{endTime}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="feeId !=null and feeId != ''">
+            and t.fee_id= #{feeId}
+        </if>
+        <if test="payOrderId !=null and payOrderId != ''">
+            and t.pay_order_id= #{payOrderId}
+        </if>
+        <if test="cashierId !=null and cashierId != ''">
+            and t.cashier_id= #{cashierId}
+        </if>
+        <if test="cashierName !=null and cashierName != ''">
+            and t.cashier_name= #{cashierName}
+        </if>
+        <if test="openInvoice !=null and openInvoice != ''">
+            and t.open_invoice= #{openInvoice}
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <!-- 修改费用明细信息 add by wuxw 2018-07-03 -->
+    <update id="updatePayFeeDetailNewInfo" parameterType="Map">
+        update pay_fee_detail t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="primeRate !=null and primeRate != ''">
+            , t.prime_rate= #{primeRate}
+        </if>
+        <if test="receivableAmount !=null and receivableAmount != ''">
+            , t.receivable_amount= #{receivableAmount}
+        </if>
+        <if test="cycles !=null and cycles != ''">
+            , t.cycles= #{cycles}
+        </if>
+        <if test="remark !=null and remark != ''">
+            , t.remark= #{remark}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            , t.start_time= #{startTime}
+        </if>
+        <if test="receivedAmount !=null and receivedAmount != ''">
+            , t.received_amount= #{receivedAmount}
+        </if>
+        <if test="payableAmount !=null and payableAmount != ''">
+            , t.payable_amount= #{payableAmount}
+        </if>
+        <if test="state !=null and state != ''">
+            , t.state= #{state}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            , t.end_time= #{endTime}
+        </if>
+        <if test="payOrderId !=null and payOrderId != ''">
+            , t.pay_order_id= #{payOrderId}
+        </if>
+        <if test="cashierId !=null and cashierId != ''">
+            , t.cashier_id= #{cashierId}
+        </if>
+        <if test="cashierName !=null and cashierName != ''">
+            , t.cashier_name= #{cashierName}
+        </if>
+        <if test="openInvoice !=null and openInvoice != ''">
+            , t.open_invoice= #{openInvoice}
+        </if>
+        where 1=1
+        <if test="detailId !=null and detailId != ''">
+            and t.detail_id= #{detailId}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="feeId !=null and feeId != ''">
+            and t.fee_id= #{feeId}
+        </if>
+    </update>
+
+    <!-- 查询费用明细数量 add by wuxw 2018-07-03 -->
+    <select id="queryPayFeeDetailNewsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from pay_fee_detail t
+        where 1 =1
+        <if test="primeRate !=null and primeRate != ''">
+            and t.prime_rate= #{primeRate}
+        </if>
+        <if test="detailId !=null and detailId != ''">
+            and t.detail_id= #{detailId}
+        </if>
+        <if test="receivableAmount !=null and receivableAmount != ''">
+            and t.receivable_amount= #{receivableAmount}
+        </if>
+        <if test="cycles !=null and cycles != ''">
+            and t.cycles= #{cycles}
+        </if>
+        <if test="remark !=null and remark != ''">
+            and t.remark= #{remark}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="startTime !=null and startTime != ''">
+            and t.start_time= #{startTime}
+        </if>
+        <if test="receivedAmount !=null and receivedAmount != ''">
+            and t.received_amount= #{receivedAmount}
+        </if>
+        <if test="payableAmount !=null and payableAmount != ''">
+            and t.payable_amount= #{payableAmount}
+        </if>
+        <if test="state !=null and state != ''">
+            and t.state= #{state}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            and t.end_time= #{endTime}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="feeId !=null and feeId != ''">
+            and t.fee_id= #{feeId}
+        </if>
+        <if test="payOrderId !=null and payOrderId != ''">
+            and t.pay_order_id= #{payOrderId}
+        </if>
+        <if test="cashierId !=null and cashierId != ''">
+            and t.cashier_id= #{cashierId}
+        </if>
+        <if test="cashierName !=null and cashierName != ''">
+            and t.cashier_name= #{cashierName}
+        </if>
+        <if test="openInvoice !=null and openInvoice != ''">
+            and t.open_invoice= #{openInvoice}
+        </if>
+    </select>
+
+    <!--查询缴费清单信息-->
+    <select id="queryPayFeeDetailNewInfo" parameterType="Map" resultType="Map">
+        select * from (
+        select * from (
+        SELECT td.`name` feeTypeCdName,
+        pfc.fee_name feeName,
+        oo.`name` payObjName,
+        pfd.`detail_id` detailId,
+        pfd.`cycles`,
+        pfd.`receivable_amount` receivableAmount,
+        pfd.`received_amount` receivedAmount,
+        uu.`name` userName,
+        pf.fee_id feeId,
+        DATE_FORMAT(pfd.create_time, '%Y-%m-%d %H:%i:%s') createTime,
+        td2.`name` primeRate
+        FROM pay_fee_detail pfd
+        left join pay_fee pf on pf.`fee_id` = pfd.`fee_id` AND pf.`status_cd` = '0'
+        left join pay_fee_config pfc on pf.config_id = pfc.config_id and pfc.status_cd = '0'
+        left join t_dict td on pfc.`fee_type_cd` = td.`status_cd` AND
+        td.`table_name` = 'pay_fee_config' AND td.`table_columns` = 'fee_type_cd'
+        left join t_dict td2 on pfd.`prime_rate` = td2.`status_cd` AND
+        td2.`table_name` = 'pay_fee_detail' AND td2.`table_columns` = 'prime_rate'
+        left join c_business cb on pfd.`b_id` = cb.`b_id`
+        left join c_orders co on cb.`o_id` = co.`o_id`
+        left join u_user uu on co.`user_id` = uu.`user_id`
+        left join s_store ss on pf.`income_obj_id` = ss.`store_id` AND ss.`status_cd` = '0'
+        left join building_owner_room_rel borr
+        on borr.`room_id` = pf.`payer_obj_id` AND borr.`status_cd` = '0'
+        left join building_owner oo
+        on oo.`owner_id` = borr.`owner_id` and oo.owner_type_cd = '1001' AND
+        oo.`status_cd` = '0'
+        WHERE 1 = 1
+        AND pfd.`status_cd` = '0'
+        and pf.payer_obj_type = '3333'
+        and pfd.state not in (1100, 1300)
+        <if test="storeId !=null and storeId !=''">
+            and ss.`store_id` = #{storeId}
+        </if>
+        <if test="startTime!=null and startTime != ''">
+            AND pfd.`create_time` &gt;= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            AND pfd.`create_time` &lt;= #{endTime}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            AND pfd.`community_id` = #{communityId}
+        </if>
+        <if test="configId !=null and configId !=''">
+            AND pf.config_id = #{configId}
+        </if>
+        <if test="primeRate!=null and primeRate!=''">
+            AND pfd.prime_rate= #{primeRate}
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND uu.name= #{userName}
+        </if>
+        ) tc
+        union
+        select * from (
+        SELECT td.`name` feeTypeCdName,
+        pfc.fee_name feeName,
+        oo.`name` payObjName,
+        pfd.`detail_id` detailId,
+        pfd.`cycles`,
+        pfd.`receivable_amount` receivableAmount,
+        pfd.`received_amount` receivedAmount,
+        uu.`name` userName,
+        pf.fee_id feeId,
+        DATE_FORMAT(pfd.create_time, '%Y-%m-%d %H:%i:%s') createTime,
+        td2.`name` primeRate
+        FROM pay_fee_detail pfd
+        left join pay_fee pf on pf.`fee_id` = pfd.`fee_id` AND pf.`status_cd` = '0'
+        left join pay_fee_config pfc on pf.config_id = pfc.config_id and pfc.status_cd = '0'
+        left join t_dict td on pfc.`fee_type_cd` = td.`status_cd` AND
+        td.`table_name` = 'pay_fee_config' AND
+        td.`table_columns` = 'fee_type_cd'
+        left join t_dict td2 on pfd.`prime_rate` = td2.`status_cd` AND
+        td2.`table_name` = 'pay_fee_detail' AND
+        td2.`table_columns` = 'prime_rate'
+        left join c_business cb on pfd.`b_id` = cb.`b_id`
+        left join c_orders co on cb.`o_id` = co.`o_id`
+        left join u_user uu on co.`user_id` = uu.`user_id`
+        left join s_store ss on pf.`income_obj_id` = ss.`store_id` AND ss.`status_cd` = '0'
+        left join owner_car oc on oc.car_id = pf.`payer_obj_id` AND oc.`status_cd` = '0'
+        left join building_owner oo
+        on oo.`owner_id` = oc.`owner_id` and oo.owner_type_cd = '1001' AND
+        oo.`status_cd` = '0'
+        WHERE 1 = 1
+        AND pfd.`status_cd` = '0'
+        and pf.payer_obj_type = '6666'
+        and pfd.state not in (1100, 1300)
+        <if test="storeId !=null and storeId !=''">
+            and ss.`store_id` = #{storeId}
+        </if>
+        <if test="startTime!=null and startTime != ''">
+            AND pfd.`create_time` &gt;= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            AND pfd.`create_time` &lt;= #{endTime}
+        </if>
+        <if test="communityId !=null and communityId !=''">
+            AND pfd.`community_id` = #{communityId}
+        </if>
+        <if test="configId !=null and configId !=''">
+            AND pf.`config_id` = #{configId}
+        </if>
+        <if test="primeRate!=null and primeRate!=''">
+            AND pfd.`prime_rate` = #{primeRate}
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND uu.name= #{userName}
+        </if>
+        ) rc) s
+        order by createTime desc
+        limit #{page}, #{row}
+    </select>
+
+    <!--查询缴费清单数量-->
+    <select id="queryPayFeeDetailNewCount" parameterType="Map" resultType="Map">
+        select count(1) total from (
+        select * from (
+        SELECT td.`name` feeTypeCdName,
+        pfc.fee_name feeName,
+        oo.`name` payObjName,
+        pfd.`detail_id` detailId,
+        pfd.`cycles`,
+        pfd.`receivable_amount` receivableAmount,
+        pfd.`received_amount` receivedAmount,
+        uu.`name` userName,
+        pf.fee_id feeId,
+        DATE_FORMAT(pfd.create_time, '%Y-%m-%d %H:%i:%s') createTime,
+        td2.`name` primeRate
+        FROM pay_fee_detail pfd
+        left join pay_fee pf on pf.`fee_id` = pfd.`fee_id` AND pf.`status_cd` = '0'
+        left join pay_fee_config pfc on pf.config_id = pfc.config_id and pfc.status_cd = '0'
+        left join t_dict td
+        on pfc.`fee_type_cd` = td.`status_cd` AND td.`table_name` = 'pay_fee_config' AND
+        td.`table_columns` = 'fee_type_cd'
+        left join t_dict td2
+        on pfd.`prime_rate` = td2.`status_cd` AND td2.`table_name` = 'pay_fee_detail' AND
+        td2.`table_columns` = 'prime_rate'
+        left join c_business cb on pfd.`b_id` = cb.`b_id`
+        left join c_orders co on cb.`o_id` = co.`o_id`
+        left join u_user uu on co.`user_id` = uu.`user_id`
+        left join s_store ss on pf.`income_obj_id` = ss.`store_id` AND ss.`status_cd` = '0'
+        left join building_owner_room_rel borr
+        on borr.`room_id` = pf.`payer_obj_id` AND borr.`status_cd` = '0'
+        left join building_owner oo
+        on oo.`owner_id` = borr.`owner_id` and oo.owner_type_cd = '1001' AND
+        oo.`status_cd` = '0'
+        WHERE 1 = 1
+        AND pfd.`status_cd` = '0'
+        and pf.payer_obj_type = '3333'
+        and pfd.state not in (1100, 1300)
+        <if test="storeId !=null and storeId !=''">
+            and ss.`store_id` = #{storeId}
+        </if>
+        <if test="startTime!=null and startTime != ''">
+            AND pfd.`create_time` &gt;= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            AND pfd.`create_time` &lt;= #{endTime}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            AND pfd.`community_id` = #{communityId}
+        </if>
+        <if test="configId !=null and configId !=''">
+            AND pf.config_id = #{configId}
+        </if>
+        <if test="primeRate!=null and primeRate!=''">
+            AND pfd.prime_rate= #{primeRate}
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND uu.name= #{userName}
+        </if>
+        ) tc
+        union
+        select * from (
+        SELECT td.`name` feeTypeCdName,
+        pfc.fee_name feeName,
+        oo.`name` payObjName,
+        pfd.`detail_id` detailId,
+        pfd.`cycles`,
+        pfd.`receivable_amount` receivableAmount,
+        pfd.`received_amount` receivedAmount,
+        uu.`name` userName,
+        pf.fee_id feeId,
+        DATE_FORMAT(pfd.create_time, '%Y-%m-%d %H:%i:%s') createTime,
+        td2.`name` primeRate
+        FROM pay_fee_detail pfd
+        left join pay_fee pf on pf.`fee_id` = pfd.`fee_id` AND pf.`status_cd` = '0'
+        left join pay_fee_config pfc on pf.config_id = pfc.config_id and pfc.status_cd = '0'
+        left join t_dict td on pfc.`fee_type_cd` = td.`status_cd` AND
+        td.`table_name` = 'pay_fee_config' AND
+        td.`table_columns` = 'fee_type_cd'
+        left join t_dict td2 on pfd.`prime_rate` = td2.`status_cd` AND
+        td2.`table_name` = 'pay_fee_detail' AND
+        td2.`table_columns` = 'prime_rate'
+        left join c_business cb on pfd.`b_id` = cb.`b_id`
+        left join c_orders co on cb.`o_id` = co.`o_id`
+        left join u_user uu on co.`user_id` = uu.`user_id`
+        left join s_store ss on pf.`income_obj_id` = ss.`store_id` AND ss.`status_cd` = '0'
+        left join owner_car oc on oc.car_id = pf.`payer_obj_id` AND oc.`status_cd` = '0'
+        left join building_owner oo
+        on oo.`owner_id` = oc.`owner_id` and oo.owner_type_cd = '1001' AND
+        oo.`status_cd` = '0'
+        WHERE 1 = 1
+        AND pfd.`status_cd` = '0'
+        and pf.payer_obj_type = '6666'
+        and pfd.state not in (1100, 1300)
+        <if test="storeId !=null and storeId !=''">
+            and ss.`store_id` = #{storeId}
+        </if>
+        <if test="startTime!=null and startTime != ''">
+            AND pfd.`create_time` &gt;= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            AND pfd.`create_time` &lt;= #{endTime}
+        </if>
+        <if test="communityId !=null and communityId !=''">
+            AND pfd.`community_id` = #{communityId}
+        </if>
+        <if test="configId !=null and configId !=''">
+            AND pf.`config_id` = #{configId}
+        </if>
+        <if test="primeRate!=null and primeRate!=''">
+            AND pfd.`prime_rate` = #{primeRate}
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND uu.name= #{userName}
+        </if>
+        ) rc) s
+    </select>
+
+    <!--查询缴费清单大小计-->
+    <select id="queryPayFeeDetailNewSumInfo" parameterType="Map" resultType="Map">
+        select SUM(allReceivableAmount) allReceivableAmount, SUM(allReceivedAmount) allReceivedAmount
+        from ((SELECT SUM(pfd.`receivable_amount`) allReceivableAmount,
+        SUM(pfd.`received_amount`) allReceivedAmount
+        FROM pay_fee_detail pfd
+        left join pay_fee pf on pf.`fee_id` = pfd.`fee_id` AND pf.`status_cd` = '0'
+        left join pay_fee_config pfc on pf.config_id = pfc.config_id and pfc.status_cd = '0'
+        left join t_dict td
+        on pfc.`fee_type_cd` = td.`status_cd` AND td.`table_name` = 'pay_fee_config' AND
+        td.`table_columns` = 'fee_type_cd'
+        left join t_dict td2
+        on pfd.`prime_rate` = td2.`status_cd` AND td2.`table_name` = 'pay_fee_detail' AND
+        td2.`table_columns` = 'prime_rate'
+        left join c_business cb on pfd.`b_id` = cb.`b_id`
+        left join c_orders co on cb.`o_id` = co.`o_id`
+        left join u_user uu on co.`user_id` = uu.`user_id`
+        left join s_store ss on pf.`income_obj_id` = ss.`store_id` AND ss.`status_cd` = '0'
+        left join building_owner_room_rel borr
+        on borr.`room_id` = pf.`payer_obj_id` AND borr.`status_cd` = '0'
+        left join building_owner oo on oo.`owner_id` = borr.`owner_id` and oo.owner_type_cd = '1001' AND
+        oo.`status_cd` = '0'
+        WHERE 1 = 1
+        AND pfd.`status_cd` = '0'
+        and pf.payer_obj_type = '3333'
+        and pfd.state not in (1100, 1300)
+        <if test="storeId !=null and storeId !=''">
+            and ss.`store_id` = #{storeId}
+        </if>
+        <if test="startTime!=null and startTime != ''">
+            AND pfd.`create_time` &gt;= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            AND pfd.`create_time` &lt;= #{endTime}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            AND pfd.`community_id` = #{communityId}
+        </if>
+        <if test="configId !=null and configId !=''">
+            AND pf.config_id = #{configId}
+        </if>
+        <if test="primeRate!=null and primeRate!=''">
+            AND pfd.prime_rate= #{primeRate}
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND uu.name= #{userName}
+        </if>
+        ) union
+        (SELECT SUM(pfd.`receivable_amount`) allReceivableAmount,
+        SUM(pfd.`received_amount`) allReceivedAmount
+        FROM pay_fee_detail pfd
+        left join pay_fee pf on pf.`fee_id` = pfd.`fee_id` AND pf.`status_cd` = '0'
+        left join pay_fee_config pfc on pf.config_id = pfc.config_id and pfc.status_cd = '0'
+        left join t_dict td
+        on pfc.`fee_type_cd` = td.`status_cd` AND td.`table_name` = 'pay_fee_config' AND
+        td.`table_columns` = 'fee_type_cd'
+        left join t_dict td2
+        on pfd.`prime_rate` = td2.`status_cd` AND td2.`table_name` = 'pay_fee_detail' AND
+        td2.`table_columns` = 'prime_rate'
+        left join c_business cb on pfd.`b_id` = cb.`b_id`
+        left join c_orders co on cb.`o_id` = co.`o_id`
+        left join u_user uu on co.`user_id` = uu.`user_id`
+        left join s_store ss on pf.`income_obj_id` = ss.`store_id` AND ss.`status_cd` = '0'
+        left join owner_car oc on oc.car_id = pf.`payer_obj_id` AND oc.`status_cd` = '0'
+        left join building_owner oo on oo.`owner_id` = oc.`owner_id` and oo.owner_type_cd = '1001' AND
+        oo.`status_cd` = '0'
+        WHERE 1 = 1
+        AND pfd.`status_cd` = '0'
+        and pf.payer_obj_type = '6666'
+        and pfd.state not in (1100, 1300)
+        <if test="storeId !=null and storeId !=''">
+            and ss.`store_id` = #{storeId}
+        </if>
+        <if test="startTime!=null and startTime != ''">
+            AND pfd.`create_time` &gt;= #{startTime}
+        </if>
+        <if test="endTime !=null and endTime != ''">
+            AND pfd.`create_time` &lt;= #{endTime}
+        </if>
+        <if test="communityId !=null and communityId !=''">
+            AND pfd.`community_id` = #{communityId}
+        </if>
+        <if test="configId !=null and configId !=''">
+            AND pf.`config_id` = #{configId}
+        </if>
+        <if test="primeRate!=null and primeRate!=''">
+            AND pfd.`prime_rate` = #{primeRate}
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND uu.name= #{userName}
+        </if>
+        )) rt
+    </select>
+</mapper>

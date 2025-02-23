@@ -1,0 +1,19 @@
+package com.newland.property.api.smo.staff;
+
+import com.newland.property.core.context.IPageData;
+import org.springframework.http.ResponseEntity;
+
+/**
+ * 修改员工密码
+ * Created by Administrator on 2019/4/2.
+ */
+public interface IChangeStaffPwdServiceSMO {
+
+    /**
+     * 保存员工信息
+     *
+     * @param pd
+     * @return
+     */
+    ResponseEntity<String> change(IPageData pd);
+}

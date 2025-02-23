@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="notificationTypeServiceDaoImpl">
+
+    <select id="getNotificationTypes" parameterType="Map" resultType="Map">
+        select t.id, t.type, t.name, t.icon, 0 as unreadCount
+        from u_notification_types as t
+        where t.is_del = 0
+        <if test="isHome == 1">
+            and t.is_home = #{isHome}
+        </if>
+        order by t.sort_index asc
+    </select>
+
+    <select id="getNotificationTypesCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from u_notification_types as t
+        where t.is_del = 0
+    </select>
+
+</mapper>

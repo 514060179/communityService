@@ -1,0 +1,100 @@
+/*
+ * Copyright 2017-2020 吴学文 and newland property team.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.newland.property.user.cmd.org;
+
+import com.alibaba.fastjson.JSONObject;
+import com.newland.property.core.annotation.NewlandPropertyCmd;
+import com.newland.property.core.annotation.PropertyTransactional;
+import com.newland.property.core.context.ICmdDataFlowContext;
+import com.newland.property.core.event.cmd.Cmd;
+import com.newland.property.core.event.cmd.CmdEvent;
+import com.newland.property.core.factory.GenerateCodeFactory;
+import com.newland.property.dto.org.OrgDto;
+import com.newland.property.intf.user.IOrgV1InnerServiceSMO;
+import com.newland.property.po.org.OrgPo;
+import com.newland.property.utils.exception.CmdException;
+import com.newland.property.utils.util.Assert;
+import com.newland.property.utils.util.BeanConvertUtil;
+import com.newland.property.vo.ResultVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+/**
+ * 类表述：保存
+ * 服务编码：org.saveOrg
+ * 请求路劲：/app/org.SaveOrg
+ * add by 吴学文 at 2022-02-28 17:26:28 mail: 928255095@qq.com
+ * open source address: https://gitee.com/wuxw7/MicroCommunity
+ * 官网：http://www.homecommunity.cn
+ * 温馨提示：如果您对此文件进行修改 请不要删除原有作者及注释信息，请补充您的 修改的原因以及联系邮箱如下
+ * // modify by 张三 at 2021-09-12 第10行在某种场景下存在某种bug 需要修复，注释10至20行 加入 20行至30行
+ */
+@NewlandPropertyCmd(serviceCode = "org.saveOrg")
+public class SaveOrgCmd extends Cmd {
+
+    private static Logger logger = LoggerFactory.getLogger(SaveOrgCmd.class);
+
+    public static final String CODE_PREFIX_ID = "10";
+
+    @Autowired
+    private IOrgV1InnerServiceSMO orgV1InnerServiceSMOImpl;
+
+    @Override
+    public void validate(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) {
+        Assert.hasKeyAndValue(reqJson, "orgName", "必填，请填写组织名称");
+        Assert.hasKeyAndValue(reqJson, "parentOrgId", "必填，请选择上级ID");
+        //Assert.hasKeyAndValue(reqJson, "belongCommunityId", "必填，请选择隶属小区");
+        //Assert.hasKeyAndValue(reqJson, "description", "必填，请填写描述");
+
+        OrgDto orgDto = new OrgDto();
+        orgDto.setOrgId(reqJson.getString("parentOrgId"));
+        List<OrgDto> orgDtos = orgV1InnerServiceSMOImpl.queryOrgs(orgDto);
+
+        Assert.listOnlyOne(orgDtos,"上级组织不存在");
+
+        int orgLevel = Integer.parseInt(orgDtos.get(0).getOrgLevel());
+        orgLevel +=1;
+        reqJson.put("orgLevel",orgLevel);
+
+    }
+
+    @Override
+    @PropertyTransactional
+    public void doCmd(CmdEvent event, ICmdDataFlowContext cmdDataFlowContext, JSONObject reqJson) throws CmdException {
+
+        String storeId = cmdDataFlowContext.getReqHeaders().get("store-id");
+
+        JSONObject businessOrg = new JSONObject();
+        businessOrg.putAll(reqJson);
+        businessOrg.put("allowOperation", "T");
+        businessOrg.put("belongCommunityId", "");
+
+        OrgPo orgPo = BeanConvertUtil.covertBean(businessOrg, OrgPo.class);
+        orgPo.setOrgId(GenerateCodeFactory.getGeneratorId(CODE_PREFIX_ID));
+        orgPo.setStoreId(storeId);
+
+        int flag = orgV1InnerServiceSMOImpl.saveOrg(orgPo);
+
+        if (flag < 1) {
+            throw new CmdException("保存数据失败");
+        }
+
+        cmdDataFlowContext.setResponseEntity(ResultVo.success());
+    }
+}

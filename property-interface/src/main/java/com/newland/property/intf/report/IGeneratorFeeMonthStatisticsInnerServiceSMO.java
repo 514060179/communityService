@@ -1,0 +1,25 @@
+package com.newland.property.intf.report;
+
+import com.newland.property.config.feign.FeignConfiguration;
+import com.newland.property.po.reportFee.ReportFeeMonthStatisticsPo;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+/**
+ * @ClassName IGeneratorFeeMonthStatisticsInnerServiceSMO
+ * @Description TODO
+ * @Author wuxw
+ * @Date 2020/10/15 21:51
+ * @Version 1.0
+ * add by wuxw 2020/10/15
+ **/
+@FeignClient(name = "report-service", configuration = {FeignConfiguration.class})
+@RequestMapping("/generatorFeeMonthStatisticsApi")
+public interface IGeneratorFeeMonthStatisticsInnerServiceSMO {
+
+    @RequestMapping(value = "/generatorData", method = RequestMethod.POST)
+    public int generatorData(@RequestBody ReportFeeMonthStatisticsPo reportFeeMonthStatisticsPo);
+
+}

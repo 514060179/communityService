@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="appVersionServiceDaoImpl">
+
+    <!--查询app版本信息数据-->
+    <select id="getAppVersion" resultType="Map" parameterType="Map">
+        select
+        t.id,
+        t.app_id as appId,
+        t.platform as platform,
+        t.channel as channel,
+        t.name as name,
+        t.code,
+        t.desc,
+        t.url,
+        t.is_force_update as isForceUpdate,
+        t.is_open_tip as isOpenTip,
+        t.create_time as createTime,
+        t.update_time as updateTime,
+        t.in_app_update as inAppUpdate
+        from c_app_versions t
+        where t.status = 0
+        <if test="appId != null and appId !=''">
+            and t.app_id = #{appId}
+        </if>
+        <if test="platform != null and platform != ''">
+            and t.platform = #{platform}
+        </if>
+        <if test="channel != null and channel !=''">
+            and t.channel = #{channel}
+        </if>
+        <if test="lang != null and lang !=''">
+            and t.lang = #{lang}
+        </if>
+        order by t.id desc limit 1
+    </select>
+
+</mapper>

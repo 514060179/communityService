@@ -1,0 +1,17 @@
+package com.newland.property.report.bmo.reportInfoSetting;
+
+import com.newland.property.po.reportInfo.ReportInfoSettingPo;
+import org.springframework.http.ResponseEntity;
+public interface ISaveReportInfoSettingBMO {
+
+
+    /**
+     * 添加进出上报
+     * add by wuxw
+     * @param reportInfoSettingPo
+     * @return
+     */
+    ResponseEntity<String> save(ReportInfoSettingPo reportInfoSettingPo);
+
+
+}

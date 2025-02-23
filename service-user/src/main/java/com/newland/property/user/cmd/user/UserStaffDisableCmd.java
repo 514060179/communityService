@@ -1,0 +1,37 @@
+package com.newland.property.user.cmd.user;
+
+import com.alibaba.fastjson.JSONObject;
+import com.newland.property.core.annotation.NewlandPropertyCmd;
+import com.newland.property.core.context.ICmdDataFlowContext;
+import com.newland.property.core.event.cmd.Cmd;
+import com.newland.property.core.event.cmd.CmdEvent;
+import com.newland.property.intf.user.IUserV1InnerServiceSMO;
+import com.newland.property.po.user.UserPo;
+import com.newland.property.utils.exception.CmdException;
+import com.newland.property.utils.util.Assert;
+import com.newland.property.utils.util.BeanConvertUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.text.ParseException;
+
+@NewlandPropertyCmd(serviceCode = "user.staff.disable")
+public class UserStaffDisableCmd extends Cmd {
+    @Autowired
+    private IUserV1InnerServiceSMO userV1InnerServiceSMOImpl;
+
+    @Override
+    public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
+        Assert.jsonObjectHaveKey(reqJson, "userId", "当前请求报文中未包含userId节点");
+    }
+
+    @Override
+    public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
+        UserPo userPo = BeanConvertUtil.covertBean(reqJson, UserPo.class);
+
+        int flag = userV1InnerServiceSMOImpl.updateUser(userPo);
+
+        if (flag < 1) {
+            throw new CmdException("禁用用户失败");
+        }
+    }
+}

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userNotificationServiceDaoImpl">
+
+    <!-- 保存用户消息 -->
+    <insert id="saveUserNotification" parameterType="Map">
+        insert into u_user_notifications(community_id, user_id, notification_id, name, title, content,
+                                         type, bg_image, page_type, app_page_url,h5_page_url, sender_name)
+        values (#{communityId}, #{userId}, #{notificationId}, #{name}, #{title},#{content},
+                #{type}, #{bgImage}, #{pageType}, #{appPageUrl}, #{h5PageUrl}, #{senderName})
+    </insert>
+
+    <update id="updateUserNotification" parameterType="Map">
+        update u_user_notification as t set t.is_del = #{isDel}
+        <if test="communityId != null and communityId != ''">
+            ,t.community_id = #{communityId}
+        </if>
+        where 1=1
+        <if test="id !=null and id != ''">
+            and t.id= #{id}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and t.community_id= #{communityId}
+        </if>
+        <if test="userId !=null and userId != ''">
+            and t.user_id = #{userId}
+        </if>
+        <if test="notificationId !=null and notificationId != ''">
+            and t.notification_id = #{notificationId}
+        </if>
+    </update>
+
+    <insert id="readUserNotification" parameterType="Map">
+        insert into u_user_notification_reads(user_notification_id, user_id)
+        values(#{id}, #{userId})
+    </insert>
+
+    <insert id="readTypeNotification" parameterType="Map">
+        insert into u_user_notification_reads(user_notification_id, user_id)
+        select a.id as user_notification_id, #{userId} as user_id
+        FROM u_user_notifications as a
+        left join u_notification_types as b on b.type=a.type
+        left join u_user_notification_reads as c on c.user_notification_id=a.id and c.user_id=#{userId}
+        where a.is_del=0 and a.sent_time>=(select create_time from u_user where user_id=#{userId})
+        and c.read_time is null
+        <if test="userId !=null and userId != ''">
+            and (a.user_id=#{userId} or a.user_id='0')
+        </if>
+        <if test="type != -1">
+            and a.type = #{type}
+        </if>
+        <if test="communityId !=null and communityId != ''">
+            and a.community_id = #{communityId}
+        </if>
+    </insert>
+
+    <select id="queryUserNotifications" parameterType="Map" resultType="Map">
+        select t.id, t.user_id as userId, t.notification_id as notificationId,
+               t.name, t.title, t.content, t.type, t.page_type as pageType, t.app_page_url as appPageUrl,
+               t.h5_page_url as h5PageUrl, t.community_id as communityId, t.sent_time as sentTime,
+               t.create_time as createTime, t.update_time as updateTime,
+               case when r.id is not null then 1 else 0 end as isRead, r.read_time as readTime,
+               t.sender_name as senderName
+        from u_user_notifications as t
+        left join u_user_notification_reads as r on r.user_notification_id=t.id
+        where t.is_del = 0
+        <if test="communityId != null and communityId != ''">
+            and t.community_id = #{communityId}
+        </if>
+        <if test="userId != null and userId != ''">
+            and t.user_id = #{userId}
+        </if>
+        <if test="type != -1">
+            and t.type = #{type}
+        </if>
+        <if test="isRead == 0">
+            and r.id is null
+        </if>
+        <if test="isRead == 1">
+            and r.id is not null
+        </if>
+        order by t.create_time desc
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+    </select>
+
+    <select id="queryUserNotificationsCount" parameterType="Map" resultType="Map">
+        select count(1) count
+        from u_user_notifications as t
+        left join u_user_notification_reads as r on r.user_notification_id=t.id
+        where t.is_del = 0
+        <if test="communityId != null and communityId != ''">
+            and t.community_id = #{communityId}
+        </if>
+        <if test="userId != null and userId != ''">
+            and t.user_id = #{userId}
+        </if>
+        <if test="type != -1">
+            and t.type = #{type}
+        </if>
+        <if test="isRead == 0">
+            and r.id is null
+        </if>
+        <if test="isRead == 1">
+            and r.id is not null
+        </if>
+    </select>
+
+</mapper>

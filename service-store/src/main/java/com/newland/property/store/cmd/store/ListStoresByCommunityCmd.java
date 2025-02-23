@@ -1,0 +1,83 @@
+package com.newland.property.store.cmd.store;
+
+import com.alibaba.fastjson.JSONObject;
+import com.newland.property.core.annotation.NewlandPropertyCmd;
+import com.newland.property.core.context.ICmdDataFlowContext;
+import com.newland.property.core.event.cmd.Cmd;
+import com.newland.property.core.event.cmd.CmdEvent;
+import com.newland.property.dto.community.CommunityMemberDto;
+import com.newland.property.dto.store.StoreDto;
+import com.newland.property.intf.community.ICommunityInnerServiceSMO;
+import com.newland.property.intf.store.IStoreInnerServiceSMO;
+import com.newland.property.utils.exception.CmdException;
+import com.newland.property.utils.util.Assert;
+import com.newland.property.utils.util.BeanConvertUtil;
+import com.newland.property.vo.api.store.ApiStoreDataVo;
+import com.newland.property.vo.api.store.ApiStoreVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+@NewlandPropertyCmd(serviceCode = "store.listStoresByCommunity")
+public class ListStoresByCommunityCmd extends Cmd {
+
+
+    @Autowired
+    private ICommunityInnerServiceSMO communityInnerServiceSMOImpl;
+
+    @Autowired
+    private IStoreInnerServiceSMO storeInnerServiceSMOImpl;
+
+    @Override
+    public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException {
+        super.validatePageInfo(reqJson);
+        Assert.hasKeyAndValue(reqJson, "communityId", "未包含小区信息");
+    }
+
+    @Override
+    public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
+        CommunityMemberDto communityMemberDto = BeanConvertUtil.covertBean(reqJson, CommunityMemberDto.class);
+        int storeCount = communityInnerServiceSMOImpl.getCommunityMemberCount(communityMemberDto);
+        List<CommunityMemberDto> communityMemberDtos = null;
+        List<ApiStoreDataVo> stores = null;
+        if (storeCount > 0) {
+            communityMemberDtos = communityInnerServiceSMOImpl.getCommunityMembers(communityMemberDto);
+            StoreDto storeDto = new StoreDto();
+            storeDto.setStoreIds(getStoreIds(communityMemberDtos));
+            List<StoreDto> storeDtos = storeInnerServiceSMOImpl.getStores(storeDto);
+            stores = BeanConvertUtil.covertBeanList(storeDtos, ApiStoreDataVo.class);
+        } else {
+            stores = new ArrayList<>();
+        }
+
+        ApiStoreVo apiStoreVo = new ApiStoreVo();
+
+        apiStoreVo.setTotal(storeCount);
+        apiStoreVo.setRecords((int) Math.ceil((double) storeCount / (double) reqJson.getInteger("row")));
+        apiStoreVo.setStores(stores);
+
+        ResponseEntity<String> responseEntity = new ResponseEntity<String>(JSONObject.toJSONString(apiStoreVo), HttpStatus.OK);
+
+        context.setResponseEntity(responseEntity);
+
+    }
+
+    /**
+     * 查询商户ID
+     *
+     * @param communityMemberDtos
+     * @return
+     */
+    private String[] getStoreIds(List<CommunityMemberDto> communityMemberDtos) {
+        List<String> storeIds = new ArrayList<>();
+        for (CommunityMemberDto communityMemberDto : communityMemberDtos) {
+            storeIds.add(communityMemberDto.getMemberId());
+        }
+
+        return storeIds.toArray(new String[storeIds.size()]);
+    }
+}

@@ -1,0 +1,66 @@
+package com.newland.property.intf.job;
+
+import com.alibaba.fastjson.JSONObject;
+import com.newland.property.config.feign.FeignConfiguration;
+import com.newland.property.dto.MallDataDto;
+import com.newland.property.dto.integral.DeductionIntegralDto;
+import com.newland.property.dto.integral.GiftIntegralDto;
+import com.newland.property.dto.mall.MallConfigDto;
+import com.newland.property.dto.user.UserDto;
+import com.newland.property.vo.ResultVo;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+/**
+ * @ClassName ITaskInnerServiceSMO
+ * @Description dataBus统一处理类
+ * @Author wuxw
+ * @Date 2019/4/24 9:04
+ * @Version 1.0
+ * add by wuxw 2019/4/24
+ **/
+@FeignClient(name = "job-service", configuration = {FeignConfiguration.class})
+@RequestMapping("/mallApi")
+public interface IMallInnerServiceSMO {
+
+
+    /**
+     * <p>重启设备</p>
+     *
+     * @param reqJson 请求信息
+     * @return TaskDto 对象数据
+     */
+    @RequestMapping(value = "/postMall", method = RequestMethod.POST)
+    ResultVo postMall(@RequestBody JSONObject reqJson);
+
+    /**
+     * <p>重启设备</p>
+     *
+     * @param mallDataDto 请求信息
+     * @return TaskDto 对象数据
+     */
+    @RequestMapping(value = "/postMallData", method = RequestMethod.POST)
+    ResultVo postMallData(@RequestBody MallDataDto mallDataDto);
+
+
+    @RequestMapping(value = "/generatorMallCode", method = RequestMethod.POST)
+    String generatorMallCode(@RequestBody UserDto userDto);
+
+    @RequestMapping(value = "/sendUserInfo", method = RequestMethod.POST)
+    ResultVo sendUserInfo(@RequestBody UserDto userDto);
+
+
+    @RequestMapping(value = "/computeIntegralMoney", method = RequestMethod.POST)
+    double computeIntegralMoney(@RequestBody int quantity);
+
+    @RequestMapping(value = "/sendUserIntegral", method = RequestMethod.POST)
+    ResultVo sendUserIntegral(@RequestBody GiftIntegralDto giftIntegralDto);
+
+    @RequestMapping(value = "/userIntegralToCommunity", method = RequestMethod.POST)
+    ResultVo userIntegralToCommunity(@RequestBody DeductionIntegralDto deductionIntegralDto);
+
+    @RequestMapping(value = "/getMallConfig", method = RequestMethod.POST)
+    MallConfigDto getMallConfig(@RequestBody MallConfigDto mallConfigDto);
+}

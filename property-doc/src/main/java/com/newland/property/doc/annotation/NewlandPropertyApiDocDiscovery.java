@@ -1,0 +1,24 @@
+package com.newland.property.doc.annotation;
+
+import com.newland.property.doc.registrar.NewlandPropertyApiDocDiscoveryRegistrar;
+import org.springframework.context.annotation.Import;
+
+import java.lang.annotation.*;
+
+/**
+ * 侦听注入
+ * Created by wuxw on 2018/7/2.
+ */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@Import(NewlandPropertyApiDocDiscoveryRegistrar.class)
+public @interface NewlandPropertyApiDocDiscovery {
+
+    String[] basePackages() default {};
+
+    String[] value() default {};
+
+    Class<?> apiDocClass();
+}

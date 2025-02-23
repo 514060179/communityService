@@ -1,0 +1,45 @@
+package com.newland.property.fee.bmo.feePrintSpec.impl;
+
+import com.newland.property.dto.fee.FeePrintSpecDto;
+import com.newland.property.fee.bmo.feePrintSpec.IGetFeePrintSpecBMO;
+import com.newland.property.intf.fee.IFeePrintSpecInnerServiceSMO;
+import com.newland.property.vo.ResultVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service("getFeePrintSpecBMOImpl")
+public class GetFeePrintSpecBMOImpl implements IGetFeePrintSpecBMO {
+
+    @Autowired
+    private IFeePrintSpecInnerServiceSMO feePrintSpecInnerServiceSMOImpl;
+
+    /**
+     * @param feePrintSpecDto
+     * @return 订单服务能够接受的报文
+     */
+    @Override
+    public ResponseEntity<String> get(FeePrintSpecDto feePrintSpecDto) {
+
+
+        int count = feePrintSpecInnerServiceSMOImpl.queryFeePrintSpecsCount(feePrintSpecDto);
+
+        List<FeePrintSpecDto> feePrintSpecDtos = null;
+        if (count > 0) {
+            feePrintSpecDtos = feePrintSpecInnerServiceSMOImpl.queryFeePrintSpecs(feePrintSpecDto);
+        } else {
+            feePrintSpecDtos = new ArrayList<>();
+        }
+
+        ResultVo resultVo = new ResultVo((int) Math.ceil((double) count / (double) feePrintSpecDto.getRow()), count, feePrintSpecDtos);
+
+        ResponseEntity<String> responseEntity = new ResponseEntity<String>(resultVo.toString(), HttpStatus.OK);
+
+        return responseEntity;
+    }
+
+}

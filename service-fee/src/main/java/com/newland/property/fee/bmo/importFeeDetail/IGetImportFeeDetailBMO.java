@@ -1,0 +1,16 @@
+package com.newland.property.fee.bmo.importFeeDetail;
+import com.newland.property.dto.importData.ImportFeeDetailDto;
+import org.springframework.http.ResponseEntity;
+public interface IGetImportFeeDetailBMO {
+
+
+    /**
+     * 查询费用导入明细
+     * add by wuxw
+     * @param  importFeeDetailDto
+     * @return
+     */
+    ResponseEntity<String> get(ImportFeeDetailDto importFeeDetailDto);
+
+
+}

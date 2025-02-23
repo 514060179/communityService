@@ -1,0 +1,96 @@
+package com.newland.property.community.dao.impl;
+
+import com.alibaba.fastjson.JSONObject;
+import com.newland.property.utils.constant.ResponseConstant;
+import com.newland.property.utils.exception.DAOException;
+import com.newland.property.core.base.dao.BaseServiceDao;
+import com.newland.property.community.dao.IActivitiesTypeServiceDao;
+import org.slf4j.Logger;
+import com.newland.property.core.log.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 信息分类服务 与数据库交互
+ * Created by wuxw on 2017/4/5.
+ */
+@Service("activitiesTypeServiceDaoImpl")
+//@Transactional
+public class ActivitiesTypeServiceDaoImpl extends BaseServiceDao implements IActivitiesTypeServiceDao {
+
+    private static Logger logger = LoggerFactory.getLogger(ActivitiesTypeServiceDaoImpl.class);
+
+
+
+
+
+    /**
+     * 保存信息分类信息 到 instance
+     * @param info   bId 信息
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public void saveActivitiesTypeInfo(Map info) throws DAOException {
+        logger.debug("保存信息分类信息Instance 入参 info : {}",info);
+
+        int saveFlag = sqlSessionTemplate.insert("activitiesTypeServiceDaoImpl.saveActivitiesTypeInfo",info);
+
+        if(saveFlag < 1){
+            throw new DAOException(ResponseConstant.RESULT_PARAM_ERROR,"保存信息分类信息Instance数据失败："+ JSONObject.toJSONString(info));
+        }
+    }
+
+
+    /**
+     * 查询信息分类信息（instance）
+     * @param info bId 信息
+     * @return List<Map>
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public List<Map> getActivitiesTypeInfo(Map info) throws DAOException {
+        logger.debug("查询信息分类信息 入参 info : {}",info);
+
+        List<Map> businessActivitiesTypeInfos = sqlSessionTemplate.selectList("activitiesTypeServiceDaoImpl.getActivitiesTypeInfo",info);
+
+        return businessActivitiesTypeInfos;
+    }
+
+
+    /**
+     * 修改信息分类信息
+     * @param info 修改信息
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public void updateActivitiesTypeInfo(Map info) throws DAOException {
+        logger.debug("修改信息分类信息Instance 入参 info : {}",info);
+
+        int saveFlag = sqlSessionTemplate.update("activitiesTypeServiceDaoImpl.updateActivitiesTypeInfo",info);
+
+        if(saveFlag < 1){
+            throw new DAOException(ResponseConstant.RESULT_PARAM_ERROR,"修改信息分类信息Instance数据失败："+ JSONObject.toJSONString(info));
+        }
+    }
+
+     /**
+     * 查询信息分类数量
+     * @param info 信息分类信息
+     * @return 信息分类数量
+     */
+    @Override
+    public int queryActivitiesTypesCount(Map info) {
+        logger.debug("查询信息分类数据 入参 info : {}",info);
+
+        List<Map> businessActivitiesTypeInfos = sqlSessionTemplate.selectList("activitiesTypeServiceDaoImpl.queryActivitiesTypesCount", info);
+        if (businessActivitiesTypeInfos.size() < 1) {
+            return 0;
+        }
+
+        return Integer.parseInt(businessActivitiesTypeInfos.get(0).get("count").toString());
+    }
+
+
+}
