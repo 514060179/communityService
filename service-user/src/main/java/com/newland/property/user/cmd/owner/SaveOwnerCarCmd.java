@@ -251,7 +251,11 @@ public class SaveOwnerCarCmd extends Cmd {
         //发起道尔新增月租车请求
         //获取停车场信息
         ParkingAreaDto parkingAreaDto = parkingAreaInnerServiceSMO.getFullParkAreaInfo(ownerCarPo.getAreaNum());
-        DoorUtil.createMonthlyCar(parkingAreaDto.getThirdAreaNum(), ownerCarDto);
+        try {
+            DoorUtil.createMonthlyCar(parkingAreaDto.getThirdAreaNum(), ownerCarDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();
         parkingSpaceDto.setCommunityId(reqJson.getString("communityId"));
         parkingSpaceDto.setPsId(reqJson.getString("psId"));

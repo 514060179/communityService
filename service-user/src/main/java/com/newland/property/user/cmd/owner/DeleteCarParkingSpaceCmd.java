@@ -122,7 +122,11 @@ public class DeleteCarParkingSpaceCmd extends Cmd {
         }
         //道尔注销
         ParkingAreaDto parkingAreaDto = parkingAreaInnerServiceSMO.getFullParkAreaInfo(exist.get(0).getAreaNum());
-        DoorUtil.deleteMonthlyCar(parkingAreaDto.getThirdAreaNum(), reqJson.getString("carNum"));
+        try {
+            DoorUtil.deleteMonthlyCar(parkingAreaDto.getThirdAreaNum(), reqJson.getString("carNum"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         reqJson.put("carNumType", ParkingSpaceDto.STATE_FREE);
         reqJson.put("psId", ownerCarDto.getPsId());
         ParkingSpaceDto parkingSpaceDto = new ParkingSpaceDto();

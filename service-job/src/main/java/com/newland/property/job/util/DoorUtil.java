@@ -129,7 +129,7 @@ public class DoorUtil {
         // 发送 POST 请求
         HttpResponse response = HttpUtil.createPost(mapping.getValue())
                 .header("Content-Type", "application/json")
-                .header("token", DoorUtil.getToken(thirdAreaNum.split("-")))  // 添加 token 到请求头
+                .header("token", getToken(thirdAreaNum.split("-")))  // 添加 token 到请求头
                 .header("Referer","139.9.36.54")
                 .body(jsonParams.toString())
                 .execute();
@@ -163,7 +163,7 @@ public class DoorUtil {
         HttpResponse response = HttpUtil.createPost(mapping.getValue())
                 .header("Content-Type", "application/json")
                 .header("Referer","139.9.36.54")
-                .header("token", DoorUtil.getToken(thirdAreaNum.split("-")))
+                .header("token", getToken(thirdAreaNum.split("-")))
                 .body(jsonParams.toString())
                 .execute();
 
@@ -197,7 +197,7 @@ public class DoorUtil {
         HttpResponse response = HttpUtil.createPost(mapping.getValue())
                 .header("Content-Type", "application/json")
                 .header("Referer","139.9.36.54")
-                .header("token", DoorUtil.getToken(thirdAreaNum.split("-")))
+                .header("token", getToken(thirdAreaNum.split("-")))
                 .body(jsonParams.toString())
                 .execute();
 
@@ -235,7 +235,7 @@ public class DoorUtil {
         HttpResponse response = HttpUtil.createPost(mapping.getValue())
                 .header("Content-Type", "application/json")
                 .header("Referer","139.9.36.54")
-                .header("token", DoorUtil.getToken(thirdAreaNum.split("-")))
+                .header("token", getToken(thirdAreaNum.split("-")))
                 .body(jsonParams.toString())
                 .execute();
 
@@ -269,7 +269,7 @@ public class DoorUtil {
         HttpResponse response = HttpUtil.createPost(mapping.getValue())
                 .header("Content-Type", "application/json")
                 .header("Referer","139.9.36.54")
-                .header("token", DoorUtil.getToken(thirdAreaNum.split("-")))
+                .header("token", getToken(thirdAreaNum.split("-")))
                 .body(jsonParams.toString())
                 .execute();
 
@@ -302,7 +302,7 @@ public class DoorUtil {
         Mapping mapping = MappingCache.getMapping(DooRConstant.DOOR_DOMAIN, DooRConstant.FEE_HISTORY_URL);
         HttpResponse response = HttpUtil.createGet(mapping.getValue().replace(":parkingNo", thirdAreaNum.split("-")[0]))
                 .header("Referer","139.9.36.54")
-                .header("token", DoorUtil.getToken(thirdAreaNum.split("-")))
+                .header("token", getToken(thirdAreaNum.split("-")))
                 .execute();
         // 解析响应
         String body = response.body();

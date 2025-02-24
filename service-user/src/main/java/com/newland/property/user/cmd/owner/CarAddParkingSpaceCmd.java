@@ -205,7 +205,11 @@ public class CarAddParkingSpaceCmd extends Cmd {
         if(lastState.equals(OwnerCarDto.STATE_DELETE)){
             ParkingAreaDto parkingAreaDto = parkingAreaInnerServiceSMO.getFullParkAreaInfo(ownerCarDto.getAreaNum());
             //DoorUtil.renewMonthlyCar(ownerCarPo.getCarNum(), ownerCarPo.getStartTime(), ownerCarPo.getEndTime(), ownerCarPo.getBalanceMoney(),  ownerCarPo.getPayType());
-            DoorUtil.createMonthlyCar(parkingAreaDto.getThirdAreaNum(), ownerCarDto);
+            try {
+                DoorUtil.createMonthlyCar(parkingAreaDto.getThirdAreaNum(), ownerCarDto);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         //道尔续租
         else if(lastState.equals(OwnerCarDto.STATE_NORMAL)){

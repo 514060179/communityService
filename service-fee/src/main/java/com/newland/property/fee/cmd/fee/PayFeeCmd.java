@@ -309,7 +309,13 @@ public class PayFeeCmd extends Cmd {
             ownerCarDto = ownerCarDtos.get(0);
             ParkingAreaDto parkingAreaDto = parkingAreaInnerServiceSMO.getFullParkAreaInfo(ownerCarDto.getAreaNum());
 
-            DoorUtil.renewMonthlyCar(parkingAreaDto.getThirdAreaNum(), ownerCarDto.getCarNum(), payFeePo.getStartTime(), payFeePo.getEndTime(), ownerCarDto.getBalanceMoney(),  ownerCarDto.getPayType());
+
+            try {
+                DoorUtil.renewMonthlyCar(parkingAreaDto.getThirdAreaNum(), ownerCarDto.getCarNum(), payFeePo.getStartTime(), payFeePo.getEndTime(), ownerCarDto.getBalanceMoney(),  ownerCarDto.getPayType());
+            } catch (Exception e) {
+                logger.error("同步道尔失败", e);
+                e.printStackTrace();
+            }
 
         } catch (ParseException e) {
             e.printStackTrace();

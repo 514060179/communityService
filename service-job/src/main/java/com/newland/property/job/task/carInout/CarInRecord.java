@@ -97,7 +97,13 @@ public class CarInRecord extends TaskSystemQuartz {
             Mapping mapping = MappingCache.getMapping(DooRConstant.DOOR_DOMAIN, DooRConstant.CAR_IN_SYNC_TIME);
             String paIdTime = CommonCache.getValue(DooRConstant.REDIS_PREFIX_SYNC_CAR_IN_TIME + parkingAreaDto.getCommunityId() + ":" + paId);
             while (pages == null || page <= pages) { //2298
-                String token = DoorUtil.getToken(split);
+                String token = null;
+                try {
+                    token = DoorUtil.getToken(split);
+                } catch (Exception e) {
+                    logger.error("车场" + parkingAreaDto.getPaId() + "获取token失败");
+                    e.printStackTrace();
+                }
                 if (token == null) {
                     logger.warn("车场" + parkingAreaDto.getPaId() + "未配置出云token");
                     pages = 0;
