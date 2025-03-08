@@ -40,6 +40,13 @@ public interface IScheduleClassesDayV1ServiceDao {
      */
     int saveScheduleClassesDayInfo(Map info) throws DAOException;
 
+    /**
+     * 保存 个人排班天信息
+     * @param info
+     * @throws DAOException DAO异常
+     */
+    int saveScheduleClassesDaySelf(Map info) throws DAOException;
+
 
 
 
@@ -52,6 +59,15 @@ public interface IScheduleClassesDayV1ServiceDao {
      */
     List<Map> getScheduleClassesDayInfo(Map info) throws DAOException;
 
+    /**
+     * 查询个人排班天信息（instance过程）
+     * 根据bId 查询个人排班天信息
+     * @param info bId 信息
+     * @return 排班天信息
+     * @throws DAOException DAO异常
+     */
+    List<Map> getScheduleClassesDaySelf(Map info) throws DAOException;
+
 
 
     /**
@@ -60,6 +76,13 @@ public interface IScheduleClassesDayV1ServiceDao {
      * @throws DAOException DAO异常
      */
     int updateScheduleClassesDayInfo(Map info) throws DAOException;
+
+    /**
+     * 修改个人排班天信息
+     * @param info 修改信息
+     * @throws DAOException DAO异常
+     */
+    int updateScheduleClassesDaySelf(Map info) throws DAOException;
 
 
     /**

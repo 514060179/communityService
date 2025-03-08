@@ -55,10 +55,20 @@ public class ScheduleClassesDayV1InnerServiceSMOImpl extends BaseServiceSMO impl
         int saveFlag = scheduleClassesDayV1ServiceDaoImpl.saveScheduleClassesDayInfo(BeanConvertUtil.beanCovertMap(scheduleClassesDayPo));
         return saveFlag;
     }
+    @Override
+    public int saveScheduleClassesDaySelf(@RequestBody  ScheduleClassesDayPo scheduleClassesDayPo) {
+        int saveFlag = scheduleClassesDayV1ServiceDaoImpl.saveScheduleClassesDaySelf(BeanConvertUtil.beanCovertMap(scheduleClassesDayPo));
+        return saveFlag;
+    }
 
      @Override
     public int updateScheduleClassesDay(@RequestBody  ScheduleClassesDayPo scheduleClassesDayPo) {
         int saveFlag = scheduleClassesDayV1ServiceDaoImpl.updateScheduleClassesDayInfo(BeanConvertUtil.beanCovertMap(scheduleClassesDayPo));
+        return saveFlag;
+    }
+     @Override
+    public int updateScheduleClassesDaySelf(@RequestBody  ScheduleClassesDayPo scheduleClassesDayPo) {
+        int saveFlag = scheduleClassesDayV1ServiceDaoImpl.updateScheduleClassesDaySelf(BeanConvertUtil.beanCovertMap(scheduleClassesDayPo));
         return saveFlag;
     }
 
@@ -81,6 +91,45 @@ public class ScheduleClassesDayV1InnerServiceSMOImpl extends BaseServiceSMO impl
         }
 
         List<ScheduleClassesDayDto> scheduleClassesDays = BeanConvertUtil.covertBeanList(scheduleClassesDayV1ServiceDaoImpl.getScheduleClassesDayInfo(BeanConvertUtil.beanCovertMap(scheduleClassesDayDto)), ScheduleClassesDayDto.class);
+
+        if(scheduleClassesDays == null || scheduleClassesDays.size() <1){
+            return scheduleClassesDays;
+        }
+
+        List<String> dayIds = new ArrayList<>();
+        for(ScheduleClassesDayDto scheduleClassesDayDto1 : scheduleClassesDays){
+            dayIds.add(scheduleClassesDayDto1.getDayId());
+        }
+
+        ScheduleClassesTimeDto scheduleClassesTimeDto =  new ScheduleClassesTimeDto();
+        scheduleClassesTimeDto.setDayIds(dayIds.toArray(new String[dayIds.size()]));
+        List<ScheduleClassesTimeDto> scheduleClassesTimeDtos = scheduleClassesTimeV1InnerServiceSMOImpl.queryScheduleClassesTimes(scheduleClassesTimeDto);
+        List<ScheduleClassesTimeDto> scheduleClassesTimeDtos1 =  null;
+        for(ScheduleClassesDayDto scheduleClassesDayDto1 : scheduleClassesDays){
+            scheduleClassesTimeDtos1 = new ArrayList<>();
+            for(ScheduleClassesTimeDto scheduleClassesTimeDto1 : scheduleClassesTimeDtos){
+                if(scheduleClassesDayDto1.getDayId().equals(scheduleClassesTimeDto1.getDayId())) {
+                    scheduleClassesTimeDtos1.add(scheduleClassesTimeDto1);
+                }
+            }
+            scheduleClassesDayDto1.setTimes(scheduleClassesTimeDtos1);
+        }
+
+
+        return scheduleClassesDays;
+    }
+    @Override
+    public List<ScheduleClassesDayDto> queryScheduleClassesDaySelf(@RequestBody  ScheduleClassesDayDto scheduleClassesDayDto) {
+
+        //校验是否传了 分页信息
+
+        int page = scheduleClassesDayDto.getPage();
+
+        if (page != PageDto.DEFAULT_PAGE) {
+            scheduleClassesDayDto.setPage((page - 1) * scheduleClassesDayDto.getRow());
+        }
+
+        List<ScheduleClassesDayDto> scheduleClassesDays = BeanConvertUtil.covertBeanList(scheduleClassesDayV1ServiceDaoImpl.getScheduleClassesDaySelf(BeanConvertUtil.beanCovertMap(scheduleClassesDayDto)), ScheduleClassesDayDto.class);
 
         if(scheduleClassesDays == null || scheduleClassesDays.size() <1){
             return scheduleClassesDays;

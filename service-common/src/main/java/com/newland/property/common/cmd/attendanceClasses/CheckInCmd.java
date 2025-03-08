@@ -138,6 +138,7 @@ public class CheckInCmd extends Cmd {
             }
             doCheckInAttendanceLog(context, reqJson, storeUserDtos, userDtos, attendanceClassesDtos.get(0));
         }
+        context.setResponseEntity(ResultVo.success());
     }
 
     private void doCheckInAttendanceLog(ICmdDataFlowContext context, JSONObject reqJson, List<StoreUserDto> storeUserDtos, List<UserDto> userDtos, AttendanceClassesDto attendanceClassesDto) {

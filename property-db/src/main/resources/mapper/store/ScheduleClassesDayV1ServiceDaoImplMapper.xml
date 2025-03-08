@@ -13,6 +13,14 @@
         #{workday},#{dayId},#{day},#{scheduleId},#{weekFlag}
         )
     </insert>
+    <!-- 保存个人排班天信息 -->
+    <insert id="saveScheduleClassesDaySelf" parameterType="Map">
+        insert into schedule_classes_day_self(
+        workday,day_id,day,schedule_id,week_flag,staff_id,schedule_date
+        ) values (
+        #{workday},#{dayId},#{day},#{scheduleId},#{weekFlag},#{staffId},#{scheduleDate}
+        )
+    </insert>
 
 
     <!-- 查询排班天信息 add by wuxw 2018-07-03 -->
@@ -47,6 +55,44 @@
 
     </select>
 
+    <!-- 查询个人排班天信息-->
+    <select id="getScheduleClassesDaySelf" parameterType="Map" resultType="Map">
+        select t.workday,t.day_id,t.day_id dayId,t.status_cd,t.status_cd statusCd,t.day,t.schedule_id,t.schedule_id
+        scheduleId,t.week_flag,t.week_flag weekFlag,c.`name` workdayName
+        from schedule_classes_day_self t
+        left join classes c on  t.workday =c.classes_id and c.status_cd =  '0'
+        where 1 =1
+        <if test="workday !=null and workday != ''">
+            and t.workday= #{workday}
+        </if>
+        <if test="dayId !=null and dayId != ''">
+            and t.day_id= #{dayId}
+        </if>
+        <if test="statusCd !=null and statusCd != ''">
+            and t.status_cd= #{statusCd}
+        </if>
+        <if test="day !=null and day != ''">
+            and t.day= #{day}
+        </if>
+        <if test="scheduleId !=null and scheduleId != ''">
+            and t.schedule_id= #{scheduleId}
+        </if>
+        <if test="weekFlag !=null and weekFlag != ''">
+            and t.week_flag= #{weekFlag}
+        </if>
+        <if test="staffId !=null and staffId != ''">
+            and t.staff_id= #{staffId}
+        </if>
+        <if test="scheduleDate !=null and scheduleDate != ''">
+            and t.schedule_date= #{scheduleDate}
+        </if>
+        order by t.week_flag,t.day
+        <if test="page != -1 and page != null ">
+            limit #{page}, #{row}
+        </if>
+
+    </select>
+
 
     <!-- 修改排班天信息 add by wuxw 2018-07-03 -->
     <update id="updateScheduleClassesDayInfo" parameterType="Map">
@@ -71,6 +117,34 @@
         </if>
         <if test="scheduleId !=null and scheduleId != ''">
             and t.schedule_id= #{scheduleId}
+        </if>
+    </update>
+    <!-- 修改个人排班天信息-->
+    <update id="updateScheduleClassesDaySelf" parameterType="Map">
+        update schedule_classes_day_self t set t.status_cd = #{statusCd}
+        <if test="newBId != null and newBId != ''">
+            ,t.b_id = #{newBId}
+        </if>
+        <if test="workday !=null and workday != ''">
+            , t.workday= #{workday}
+        </if>
+
+        <if test="day !=null and day != ''">
+            , t.day= #{day}
+        </if>
+
+        <if test="weekFlag !=null and weekFlag != ''">
+            , t.week_flag= #{weekFlag}
+        </if>
+        where 1=1
+        <if test="dayId !=null and dayId != ''">
+            and t.day_id= #{dayId}
+        </if>
+        <if test="scheduleId !=null and scheduleId != ''">
+            and t.schedule_id= #{scheduleId}
+        </if>
+        <if test="scheduleDate !=null and scheduleDate != ''">
+            and t.schedule_date= #{scheduleDate}
         </if>
     </update>
 

@@ -159,9 +159,9 @@ public class BootApplicationStart {
         CloseableHttpClient build = httpClientBuilder.build();
         //设置超时时间
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory(build);
-        httpRequestFactory.setConnectionRequestTimeout(10000);
-        httpRequestFactory.setConnectTimeout(10000);
-        httpRequestFactory.setReadTimeout(10000);
+        httpRequestFactory.setConnectionRequestTimeout(100000);
+        httpRequestFactory.setConnectTimeout(100000);
+        httpRequestFactory.setReadTimeout(100000);
         restTemplate.setRequestFactory(httpRequestFactory);
         return restTemplate;
     }

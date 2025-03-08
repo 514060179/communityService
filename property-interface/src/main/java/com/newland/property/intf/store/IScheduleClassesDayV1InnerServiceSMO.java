@@ -41,8 +41,14 @@ public interface IScheduleClassesDayV1InnerServiceSMO {
     @RequestMapping(value = "/saveScheduleClassesDay", method = RequestMethod.POST)
     public int saveScheduleClassesDay(@RequestBody ScheduleClassesDayPo scheduleClassesDayPo);
 
+    @RequestMapping(value = "/saveScheduleClassesDaySelf", method = RequestMethod.POST)
+    public int saveScheduleClassesDaySelf(@RequestBody ScheduleClassesDayPo scheduleClassesDayPo);
+
     @RequestMapping(value = "/updateScheduleClassesDay", method = RequestMethod.POST)
     public int updateScheduleClassesDay(@RequestBody ScheduleClassesDayPo scheduleClassesDayPo);
+
+    @RequestMapping(value = "/updateScheduleClassesDaySelf", method = RequestMethod.POST)
+    public int updateScheduleClassesDaySelf(@RequestBody ScheduleClassesDayPo scheduleClassesDayPo);
 
     @RequestMapping(value = "/deleteScheduleClassesDay", method = RequestMethod.POST)
     public int deleteScheduleClassesDay(@RequestBody ScheduleClassesDayPo scheduleClassesDayPo);
@@ -56,6 +62,15 @@ public interface IScheduleClassesDayV1InnerServiceSMO {
      */
     @RequestMapping(value = "/queryScheduleClassesDays", method = RequestMethod.POST)
     List<ScheduleClassesDayDto> queryScheduleClassesDays(@RequestBody ScheduleClassesDayDto scheduleClassesDayDto);
+    /**
+     * <p>查询小区楼信息</p>
+     *
+     *
+     * @param scheduleClassesDayDto 数据对象分享
+     * @return ScheduleClassesDayDto 对象数据
+     */
+    @RequestMapping(value = "/queryScheduleClassesDaySelf", method = RequestMethod.POST)
+    List<ScheduleClassesDayDto> queryScheduleClassesDaySelf(@RequestBody ScheduleClassesDayDto scheduleClassesDayDto);
 
     /**
      * 查询<p>小区楼</p>总记录数

@@ -33,6 +33,8 @@ private String statusCd = "0";
 private String day;
 private String scheduleId;
 private String weekFlag;
+private String staffId;
+private String scheduleDate;
 public String getWorkday() {
         return workday;
     }
@@ -70,6 +72,19 @@ public void setWeekFlag(String weekFlag) {
         this.weekFlag = weekFlag;
     }
 
+    public String getStaffId() {
+        return staffId;
+    }
 
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
 
+    public String getScheduleDate() {
+        return scheduleDate;
+    }
+
+    public void setScheduleDate(String scheduleDate) {
+        this.scheduleDate = scheduleDate;
+    }
 }

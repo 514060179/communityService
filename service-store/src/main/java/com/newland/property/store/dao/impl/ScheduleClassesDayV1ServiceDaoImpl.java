@@ -56,6 +56,20 @@ public class ScheduleClassesDayV1ServiceDaoImpl extends BaseServiceDao implement
         return saveFlag;
     }
 
+    /**
+     * 保存个人排班天信息 到 instance
+     * @param info   bId 信息
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public int saveScheduleClassesDaySelf(Map info) throws DAOException {
+        logger.debug("保存 saveScheduleClassesDaySelf 入参 info : {}",info);
+
+        int saveFlag = sqlSessionTemplate.insert("scheduleClassesDayV1ServiceDaoImpl.saveScheduleClassesDaySelf",info);
+
+        return saveFlag;
+    }
+
 
     /**
      * 查询排班天信息（instance）
@@ -71,6 +85,20 @@ public class ScheduleClassesDayV1ServiceDaoImpl extends BaseServiceDao implement
 
         return businessScheduleClassesDayInfos;
     }
+    /**
+     * 查询排班天信息（instance）
+     * @param info bId 信息
+     * @return List<Map>
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public List<Map> getScheduleClassesDaySelf(Map info) throws DAOException {
+        logger.debug("查询 getScheduleClassesDaySelf 入参 info : {}",info);
+
+        List<Map> businessScheduleClassesDayInfos = sqlSessionTemplate.selectList("scheduleClassesDayV1ServiceDaoImpl.getScheduleClassesDaySelf",info);
+
+        return businessScheduleClassesDayInfos;
+    }
 
 
     /**
@@ -83,6 +111,20 @@ public class ScheduleClassesDayV1ServiceDaoImpl extends BaseServiceDao implement
         logger.debug("修改 updateScheduleClassesDayInfo 入参 info : {}",info);
 
         int saveFlag = sqlSessionTemplate.update("scheduleClassesDayV1ServiceDaoImpl.updateScheduleClassesDayInfo",info);
+
+        return saveFlag;
+    }
+
+    /**
+     * 修改个人排班天信息
+     * @param info 修改信息
+     * @throws DAOException DAO异常
+     */
+    @Override
+    public int updateScheduleClassesDaySelf(Map info) throws DAOException {
+        logger.debug("修改 updateScheduleClassesDaySelf 入参 info : {}",info);
+
+        int saveFlag = sqlSessionTemplate.update("scheduleClassesDayV1ServiceDaoImpl.updateScheduleClassesDaySelf",info);
 
         return saveFlag;
     }

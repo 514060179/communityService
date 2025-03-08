@@ -33,10 +33,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 类表述： 服务之前调用的接口实现类，不对外提供接口能力 只用于接口建调用
@@ -190,7 +191,14 @@ public class ScheduleClassesStaffV1InnerServiceSMOImpl extends BaseServiceSMO im
 
         //设置问题 ，这里默认反馈在线
         if (scheduleClassesDayDtos == null || scheduleClassesDayDtos.size() < 1) {
-            scheduleClassesStaffDto.setWork(true);
+            scheduleClassesDayDto.setDay(getCurrentDayFormatted());
+            scheduleClassesDayDto.setScheduleDate(getCurrentDateFormatted());
+            scheduleClassesDayDto.setStaffId(scheduleClassesStaffDto.getStaffId());
+            scheduleClassesDayDtos = scheduleClassesDayV1InnerServiceSMOImpl.queryScheduleClassesDaySelf(scheduleClassesDayDto);
+            if (scheduleClassesDayDtos == null || scheduleClassesDayDtos.size() < 1){
+                scheduleClassesStaffDto.setWork(true);
+                return;
+            }
             return;
         }
 
@@ -240,6 +248,30 @@ public class ScheduleClassesStaffV1InnerServiceSMOImpl extends BaseServiceSMO im
     }
 
     /**
+     * 获取当前日期，返回格式为 yyyy-d
+     * @return 格式化后的日期字符串，例如：2025-3 或 2025-10
+     */
+    private String getCurrentDateFormatted() {
+        // 获取当前日期
+        LocalDate currentDate = LocalDate.now();
+        // 定义日期格式化规则
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M");
+        // 格式化日期并返回
+        return currentDate.format(formatter);
+    }
+    /**
+     * 获取当前日，返回格式为 d
+     * @return 格式化后的日期字符串，例如：3 或 10
+     */
+    private String getCurrentDayFormatted() {
+        // 获取当前日期
+        LocalDate currentDate = LocalDate.now();
+        // 定义日期格式化规则
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M");
+        // 格式化日期并返回
+        return currentDate.format(formatter);
+    }
+    /**
      * 员工是否上班 按周 排班
      *
      * @param scheduleClassesDto
@@ -278,7 +310,14 @@ public class ScheduleClassesStaffV1InnerServiceSMOImpl extends BaseServiceSMO im
         }
         //设置问题 ，这里默认反馈在线
         if (scheduleClassesDayDtos == null || scheduleClassesDayDtos.size() < 1) {
-            scheduleClassesStaffDto.setWork(true);
+            scheduleClassesDayDto.setDay(getCurrentDayFormatted());
+            scheduleClassesDayDto.setScheduleDate(getCurrentDateFormatted());
+            scheduleClassesDayDto.setStaffId(scheduleClassesStaffDto.getStaffId());
+            scheduleClassesDayDtos = scheduleClassesDayV1InnerServiceSMOImpl.queryScheduleClassesDaySelf(scheduleClassesDayDto);
+            if (scheduleClassesDayDtos == null || scheduleClassesDayDtos.size() < 1){
+                scheduleClassesStaffDto.setWork(true);
+                return;
+            }
             return;
         }
 
@@ -356,8 +395,14 @@ public class ScheduleClassesStaffV1InnerServiceSMOImpl extends BaseServiceSMO im
 
         //设置问题 ，这里默认反馈在线
         if (scheduleClassesDayDtos == null || scheduleClassesDayDtos.size() < 1) {
-            scheduleClassesStaffDto.setWork(true);
-            return;
+            scheduleClassesDayDto.setDay(getCurrentDayFormatted());
+            scheduleClassesDayDto.setScheduleDate(getCurrentDateFormatted());
+            scheduleClassesDayDto.setStaffId(scheduleClassesStaffDto.getStaffId());
+            scheduleClassesDayDtos = scheduleClassesDayV1InnerServiceSMOImpl.queryScheduleClassesDaySelf(scheduleClassesDayDto);
+            if (scheduleClassesDayDtos == null || scheduleClassesDayDtos.size() < 1){
+                scheduleClassesStaffDto.setWork(true);
+                return;
+            }
         }
 
         if (ScheduleClassesDayDto.WORKDAY_NO.equals(scheduleClassesDayDtos.get(0).getWorkday())) {
@@ -420,7 +465,10 @@ public class ScheduleClassesStaffV1InnerServiceSMOImpl extends BaseServiceSMO im
         ScheduleClassesDayDto scheduleClassesDayDto = new ScheduleClassesDayDto();
         scheduleClassesDayDto.setScheduleId(scheduleClassesDtos.get(0).getScheduleId());
         List<ScheduleClassesDayDto> scheduleClassesDayDtos = scheduleClassesDayV1InnerServiceSMOImpl.queryScheduleClassesDays(scheduleClassesDayDto);
-
+        //修改的排班列表 todo
+        scheduleClassesDayDto.setStaffId(scheduleClassesStaffDto.getStaffId());
+        scheduleClassesDayDto.setScheduleDate(scheduleClassesStaffDto.getCurDate());
+        List<ScheduleClassesDayDto> scheduleClassesDaySelfDtos = scheduleClassesDayV1InnerServiceSMOImpl.queryScheduleClassesDaySelf(scheduleClassesDayDto);
         //设置问题 ，这里默认反馈在线
         if (scheduleClassesDayDtos == null || scheduleClassesDayDtos.size() < 1) {
             return scheduleClassesStaffDto;
@@ -435,11 +483,11 @@ public class ScheduleClassesStaffV1InnerServiceSMOImpl extends BaseServiceSMO im
         int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         if (ScheduleClassesDto.SCHEDULE_TYPE_DAY.equals(scheduleClassesDtos.get(0).getScheduleType())) {
-            doDay(scheduleClassesStaffDto, scheduleClassesDtos.get(0), scheduleClassesDayDtos, curMonth, maxDay);
+            doDay(scheduleClassesStaffDto, scheduleClassesDtos.get(0), scheduleClassesDayDtos, curMonth, maxDay,scheduleClassesDaySelfDtos);
         } else if (ScheduleClassesDto.SCHEDULE_TYPE_WEEK.equals(scheduleClassesDtos.get(0).getScheduleType())) {
-            doWeek(scheduleClassesStaffDto, scheduleClassesDtos.get(0), scheduleClassesDayDtos, curMonth, maxDay);
+            doWeek(scheduleClassesStaffDto, scheduleClassesDtos.get(0), scheduleClassesDayDtos, curMonth, maxDay,scheduleClassesDaySelfDtos);
         } else if (ScheduleClassesDto.SCHEDULE_TYPE_MONTH.equals(scheduleClassesDtos.get(0).getScheduleType())) {
-            doMonth(scheduleClassesStaffDto, scheduleClassesDtos.get(0), scheduleClassesDayDtos, curMonth, maxDay);
+            doMonth(scheduleClassesStaffDto, scheduleClassesDtos.get(0), scheduleClassesDayDtos, curMonth, maxDay,scheduleClassesDaySelfDtos);
         }
 
         return scheduleClassesStaffDto;
@@ -449,11 +497,17 @@ public class ScheduleClassesStaffV1InnerServiceSMOImpl extends BaseServiceSMO im
     private void doDay(ScheduleClassesStaffDto scheduleClassesStaffDto,
                        ScheduleClassesDto scheduleClassesDto,
                        List<ScheduleClassesDayDto> scheduleClassesDayDtos,
-                       String curMonth, int maxDay) {
+                       String curMonth, int maxDay, List<ScheduleClassesDayDto> scheduleClassesDaySelfDtos) {
         List<ScheduleClassesDayDto> days = new ArrayList<>();
         ScheduleClassesDayDto scDay = null;
         ScheduleClassesDayDto tmpScheduleClassesDayDto = null;
         int curDay = 1;
+        Map<String, ScheduleClassesDayDto> selfMap = null;
+        if (scheduleClassesDaySelfDtos != null && !scheduleClassesDaySelfDtos.isEmpty()){
+            selfMap = scheduleClassesDaySelfDtos.stream().collect(Collectors.toMap(
+                    ScheduleClassesDayDto::getDay, Function.identity()
+            ));
+        }
         for (int day = 1; day <= maxDay; day++) {
             scDay = new ScheduleClassesDayDto();
             String today = curMonth + "-" + day;
@@ -472,15 +526,18 @@ public class ScheduleClassesStaffV1InnerServiceSMOImpl extends BaseServiceSMO im
             if (curDay == 0) {
                 curDay = scheduleCycle;
             }
-
-
-            scDay.setDay(day + "");
-            //计算 排班
-            for (ScheduleClassesDayDto scheduleClassesDayDto1 : scheduleClassesDayDtos) {
-                if ((curDay + "").equals(scheduleClassesDayDto1.getDay())) {
-                    tmpScheduleClassesDayDto = scheduleClassesDayDto1;
+            // 是否存在个人排班记录
+            if (selfMap != null && !selfMap.isEmpty() && selfMap.containsKey(day + "")) {
+                tmpScheduleClassesDayDto = selfMap.get(day + "");
+            }else{
+                //计算 排班
+                for (ScheduleClassesDayDto scheduleClassesDayDto1 : scheduleClassesDayDtos) {
+                    if ((curDay + "").equals(scheduleClassesDayDto1.getDay())) {
+                        tmpScheduleClassesDayDto = scheduleClassesDayDto1;
+                    }
                 }
             }
+            scDay.setDay(day + "");
             if (tmpScheduleClassesDayDto != null) {
                 scDay.setWorkday(tmpScheduleClassesDayDto.getWorkday());
                 scDay.setWorkdayName(tmpScheduleClassesDayDto.getWorkdayName());
@@ -496,11 +553,17 @@ public class ScheduleClassesStaffV1InnerServiceSMOImpl extends BaseServiceSMO im
     private void doWeek(ScheduleClassesStaffDto scheduleClassesStaffDto,
                         ScheduleClassesDto scheduleClassesDto,
                         List<ScheduleClassesDayDto> scheduleClassesDayDtos,
-                        String curMonth, int maxDay) {
+                        String curMonth, int maxDay, List<ScheduleClassesDayDto> scheduleClassesDaySelfDtos) {
         List<ScheduleClassesDayDto> days = new ArrayList<>();
         ScheduleClassesDayDto scDay = null;
         ScheduleClassesDayDto tmpScheduleClassesDayDto = null;
         int curDay = 1;
+        Map<String, ScheduleClassesDayDto> selfMap = null;
+        if (scheduleClassesDaySelfDtos != null && !scheduleClassesDaySelfDtos.isEmpty()){
+            selfMap = scheduleClassesDaySelfDtos.stream().collect(Collectors.toMap(
+                    ScheduleClassesDayDto::getDay, Function.identity()
+            ));
+        }
         for (int day = 1; day <= maxDay; day++) {
             scDay = new ScheduleClassesDayDto();
             Calendar today = Calendar.getInstance();
@@ -536,10 +599,14 @@ public class ScheduleClassesStaffV1InnerServiceSMOImpl extends BaseServiceSMO im
                     tmpScheduleClassesDayDto = scheduleClassesDayDto1;
                 }
             }
-            if (tmpScheduleClassesDayDto == null) { // 没有设置周
-                for (ScheduleClassesDayDto scheduleClassesDayDto1 : scheduleClassesDayDtos) {
-                    if ((curDay + "").equals(scheduleClassesDayDto1.getDay())) {
-                        tmpScheduleClassesDayDto = scheduleClassesDayDto1;
+            if (selfMap != null && !selfMap.isEmpty() && selfMap.containsKey(day + "")) {
+                tmpScheduleClassesDayDto = selfMap.get(day + "");
+            }else{
+                if (tmpScheduleClassesDayDto == null) { // 没有设置周
+                    for (ScheduleClassesDayDto scheduleClassesDayDto1 : scheduleClassesDayDtos) {
+                        if ((curDay + "").equals(scheduleClassesDayDto1.getDay())) {
+                            tmpScheduleClassesDayDto = scheduleClassesDayDto1;
+                        }
                     }
                 }
             }
@@ -559,21 +626,32 @@ public class ScheduleClassesStaffV1InnerServiceSMOImpl extends BaseServiceSMO im
     private void doMonth(ScheduleClassesStaffDto scheduleClassesStaffDto,
                          ScheduleClassesDto scheduleClassesDto,
                          List<ScheduleClassesDayDto> scheduleClassesDayDtos,
-                         String curMonth, int maxDay) {
+                         String curMonth, int maxDay, List<ScheduleClassesDayDto> scheduleClassesDaySelfDtos) {
         List<ScheduleClassesDayDto> days = new ArrayList<>();
         ScheduleClassesDayDto scDay = null;
         ScheduleClassesDayDto tmpScheduleClassesDayDto = null;
         int curDay = 1;
+        Map<String, ScheduleClassesDayDto> selfMap = null;
+        if (scheduleClassesDaySelfDtos != null && !scheduleClassesDaySelfDtos.isEmpty()){
+            selfMap = scheduleClassesDaySelfDtos.stream().collect(Collectors.toMap(
+                    ScheduleClassesDayDto::getDay, Function.identity()
+            ));
+        }
         for (int day = 1; day <= maxDay; day++) {
             scDay = new ScheduleClassesDayDto();
             curDay = day;
             scDay.setDay(day + "");
             //计算 排班
-            for (ScheduleClassesDayDto scheduleClassesDayDto1 : scheduleClassesDayDtos) {
-                if ((curDay + "").equals(scheduleClassesDayDto1.getDay())) {
-                    tmpScheduleClassesDayDto = scheduleClassesDayDto1;
+            if (selfMap != null && !selfMap.isEmpty() && selfMap.containsKey(day + "")) {
+                tmpScheduleClassesDayDto = selfMap.get(day + "");
+            }else {
+                for (ScheduleClassesDayDto scheduleClassesDayDto1 : scheduleClassesDayDtos) {
+                    if ((curDay + "").equals(scheduleClassesDayDto1.getDay())) {
+                        tmpScheduleClassesDayDto = scheduleClassesDayDto1;
+                    }
                 }
             }
+
             if (tmpScheduleClassesDayDto != null) {
                 scDay.setWorkday(tmpScheduleClassesDayDto.getWorkday());
                 scDay.setWorkdayName(tmpScheduleClassesDayDto.getWorkdayName());

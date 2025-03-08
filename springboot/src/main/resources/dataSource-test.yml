@@ -1,9 +1,9 @@
 dataSources:
   ds0: !!com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/hc_community?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.1.222:3306/hc_community?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
-    password: Pwd123456..
+    password: Pass123456..
     minIdle: 5
     validationQuery: SELECT 1 FROM DUAL
     initialSize: 5
@@ -23,9 +23,9 @@ dataSources:
 #    maintenanceIntervalMilliseconds: 30000
   ds1: !!com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/TT?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.1.222:3306/TT?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
-    password: Pwd123456..
+    password: Pass123456..
     minIdle: 5
     maxActive: 2000
     validationQuery: SELECT 1 FROM DUAL

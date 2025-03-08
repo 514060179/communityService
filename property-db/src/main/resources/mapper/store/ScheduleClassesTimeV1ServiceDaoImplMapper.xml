@@ -76,6 +76,9 @@
         <if test="scheduleId !=null and scheduleId != ''">
             and t.schedule_id= #{scheduleId}
         </if>
+        <if test="dayId !=null and dayId != ''">
+            and t.day_id= #{dayId}
+        </if>
 
     </update>
 

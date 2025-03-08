@@ -92,7 +92,7 @@ public class OwnerUserLoginCmd extends Cmd {
     public void validate(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
         Assert.hasKeyAndValue(reqJson, "username", "请求报文中未包含用户名");
         Assert.hasKeyAndValue(reqJson, "password", "请求报文中未包含密码");
-
+        logger.info("time out-用户登录：" + reqJson.toString());
         String areaCode = "";
         if(reqJson.containsKey("areaCode")){
             areaCode = reqJson.getString("areaCode");
@@ -104,12 +104,14 @@ public class OwnerUserLoginCmd extends Cmd {
 
         //todo 验证码登录
         if (reqJson.containsKey("loginByPhone") && reqJson.getBoolean("loginByPhone")) {
+            logger.info("time out-验证码登录：" + reqJson.toString());
             SmsDto smsDto = new SmsDto();
             smsDto.setAreCode(areaCode);
             smsDto.setTel(reqJson.getString("username"));
             smsDto.setCode(reqJson.getString("password"));
             smsDto = smsInnerServiceSMOImpl.validateCode(smsDto);
             if (!smsDto.isSuccess()) {
+                logger.error("time out-验证码错误");
                 throw new SMOException("验证码错误");
             }
         }
@@ -118,6 +120,7 @@ public class OwnerUserLoginCmd extends Cmd {
     @Override
     public void doCmd(CmdEvent event, ICmdDataFlowContext context, JSONObject reqJson) throws CmdException, ParseException {
 
+        logger.info("time out-用户登录业务处理：" + reqJson.toString());
         UserDto userDto = new UserDto();
         userDto.setLevelCd(UserDto.LEVEL_CD_USER);
 //        if (ValidatorUtil.isMobile(reqJson.getString("username"))) {//用户临时秘钥登录
@@ -149,6 +152,7 @@ public class OwnerUserLoginCmd extends Cmd {
         }
 
         // todo 1.0 查询用户是否存在
+        logger.info("time out-查询用户是否存在：" + userDto.toString());
         List<UserDto> userDtos = userInnerServiceSMOImpl.getUsers(userDto);
 
         // todo 1.1 如果验证码登录，自动绑定关系
@@ -161,6 +165,7 @@ public class OwnerUserLoginCmd extends Cmd {
 
         // todo 1.2 同步物业用户资料给商城
         try {
+            logger.info("time out-同步商城用户信息：" + userDtos.get(0).toString());
             mallInnerServiceSMOImpl.sendUserInfo(userDtos.get(0));
         } catch (Exception ex) {
             logger.error("同步商城报错：" + ex.getMessage());
@@ -168,6 +173,7 @@ public class OwnerUserLoginCmd extends Cmd {
         }
 
         // todo  2.0 校验 业主用户绑定表是否存在记录
+        logger.info("time out-校验业主用户绑定表是否存在记录：" + userDtos.get(0).toString());
         OwnerAppUserDto ownerAppUserDto = new OwnerAppUserDto();
         ownerAppUserDto.setUserId(userDtos.get(0).getUserId());
         ownerAppUserDto.setLink(userDtos.get(0).getTel());
@@ -182,11 +188,13 @@ public class OwnerUserLoginCmd extends Cmd {
             SystemInfoDto systemInfoDto = new SystemInfoDto();
             List<SystemInfoDto> systemInfoDtos = systemInfoV1InnerServiceSMOImpl.querySystemInfos(systemInfoDto);
             communityId = systemInfoDtos.get(0).getDefaultCommunityId();
+            logger.info("time out-查询系统默认小区:"+communityId);
         }
         CommunityDto communityDto = new CommunityDto();
         communityDto.setCommunityId(communityId);
         List<CommunityDto> communityDtos = communityInnerServiceSMOImpl.queryCommunitys(communityDto);
         Assert.listOnlyOne(communityDtos, "小区不存在，确保开发者账户配置默认小区" + communityId);
+        logger.info("time out-查询小区：" + communityDtos.get(0).getCommunityId());
 
         //todo 生成 app 永久登录key
         UserDto tmpUserDto = userDtos.get(0);
@@ -208,6 +216,7 @@ public class OwnerUserLoginCmd extends Cmd {
 
         // 保存最新token
         String key = CommonConstant.USER_LATEST_JWT_TOKEN + tmpUserDto.getUserId();
+        logger.info("time out-保存最新token：" + key);
         CommonCache.removeValue(key);
         String expireTime = MappingCache.getValue(MappingConstant.KEY_JWT_EXPIRE_TIME);
         if (StringUtil.isNullOrNone(expireTime)) {
